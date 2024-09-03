@@ -15,7 +15,7 @@ const LocationSearch: React.FC<LocationSearchProps> = ({ onLocationSelect }) => 
 
   const { isLoaded, loadError } = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsApiKey: 'YOUR_API_KEY',
+    googleMapsApiKey: 'AIzaSyC_XFoCxYSaH0vCtdFKvTS3zQoZ0g54OLM',
     libraries: ['places'],
   });
 
