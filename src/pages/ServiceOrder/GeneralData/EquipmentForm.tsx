@@ -1,15 +1,68 @@
-import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
 import { faGears, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SelectSerie from '../../../components/Forms/SelectGroup/SelectSerie';
-import Modal from '../../../components/Modal/ModalComponent'; 
+import Modal from '../../../components/Modal/ModalComponent';
 import SerieForm from './SerieForm';
+import { RootState, AppDispatch } from '../../../redux/store';
+import { setMotor, setMarca, setModelo, setSerie, setEspecificaciones } from '../../../redux/slices/equipamentFormSlice';
+import { EquipmentSerieModel } from '../../../models/equipmentSerieModel';
+import { getEquipmentSeries } from '../../../services/equipmentSerieService/equipmentSerieService';
 
 const EquipamentForm = () => {
+    const dispatch = useDispatch<AppDispatch>();
+    const formData = useSelector((state: RootState) => state.equipamentForm);
     const [isModalOpen, setModalOpen] = useState(false);
 
     const openModal = () => setModalOpen(true);
     const closeModal = () => setModalOpen(false);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        switch (name) {
+            case 'motor':
+                dispatch(setMotor(value));
+                break;
+            case 'marca':
+                dispatch(setMarca(value));
+                break;
+            case 'modelo':
+                dispatch(setModelo(value));
+                break;
+            case 'serie':
+                dispatch(setSerie(value));
+                break;
+            case 'especificaciones':
+                dispatch(setEspecificaciones(value));
+                break;
+            default:
+                break;
+        }
+    };
+
+    const [equipmentSeries, setEquipmentSeries] = useState<EquipmentSerieModel[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    const fetchEquipmentSeries = async () => {
+        try {
+            const result = await getEquipmentSeries();
+            setEquipmentSeries(result);
+        } catch (error) {
+            console.error('Error al obtener las Series de Equipo:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchEquipmentSeries();
+    }, []);
+
+    const handleNewSerie = (newSerie: EquipmentSerieModel) => {
+        setEquipmentSeries((prevSeries) => [...prevSeries, newSerie]);
+    };
+
 
     return (
         <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -27,6 +80,9 @@ const EquipamentForm = () => {
                             </label>
                             <input
                                 type="text"
+                                name="motor"
+                                value={formData.motor}
+                                onChange={handleChange}
                                 placeholder="Motor del Equipo"
                                 className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                             />
@@ -37,6 +93,9 @@ const EquipamentForm = () => {
                             </label>
                             <input
                                 type="text"
+                                name="marca"
+                                value={formData.marca}
+                                onChange={handleChange}
                                 placeholder="Marca del Equipo"
                                 className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                             />
@@ -50,6 +109,9 @@ const EquipamentForm = () => {
                             </label>
                             <input
                                 type="text"
+                                name="modelo"
+                                value={formData.modelo}
+                                onChange={handleChange}
                                 placeholder="Modelo del Equipo"
                                 className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                             />
@@ -60,16 +122,22 @@ const EquipamentForm = () => {
                             </label>
                             <input
                                 type="text"
+                                name="modelo"
+                                value={formData.modelo}
+                                onChange={handleChange}
                                 placeholder="Modelo del Equipo"
                                 className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                             />
                         </div>
+
                     </div>
 
                     <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                         <div className="w-full xl:w-1/2 flex items-end">
-                            <SelectSerie />
-                            <button
+                            <SelectSerie
+                                equipmentSeries={equipmentSeries}
+                                loading={loading}
+                            />                         <button
                                 type="button"
                                 className="ml-5 flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white hover:bg-primary-dark transition relative"
                                 aria-label="Agregar Serie"
@@ -79,13 +147,15 @@ const EquipamentForm = () => {
                                 <FontAwesomeIcon icon={faPlus} />
                             </button>
                         </div>
-
                         <div className="w-full xl:w-1/2">
                             <label className="mb-2.5 block text-black dark:text-white">
                                 Serie
                             </label>
                             <input
                                 type="text"
+                                name="serie"
+                                value={formData.serie}
+                                onChange={handleChange}
                                 placeholder="Serie del Equipo"
                                 className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                             />
@@ -94,40 +164,39 @@ const EquipamentForm = () => {
 
                     <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                         <div className="w-full xl:w-1/2">
-                            <div>
-                                <label className="mb-3 block text-black dark:text-white">
-                                    Especificaciones
-                                </label>
-                                <textarea
-                                    rows={6}
-                                    placeholder="Especificaciones del Equipo"
-                                    className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                ></textarea>
-                            </div>
+                            <label className="mb-3 block text-black dark:text-white">
+                                Especificaciones
+                            </label>
+                            <textarea
+                                name="especificaciones"
+                                value={formData.especificaciones}
+                                onChange={handleChange}
+                                rows={6}
+                                placeholder="Especificaciones del Equipo"
+                                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                            ></textarea>
                         </div>
                         <div className="w-full xl:w-1/2">
-                            <div>
-                                <label className="mb-3 block text-black dark:text-white">
-                                    Especificaciones
-                                </label>
-                                <textarea
-                                    rows={6}
-                                    placeholder="Especificaciones del Equipo"
-                                    className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                ></textarea>
-                            </div>
+                            <label className="mb-3 block text-black dark:text-white">
+                                Especificaciones
+                            </label>
+                            <textarea
+                                name="especificaciones"
+                                value={formData.especificaciones}
+                                onChange={handleChange}
+                                rows={6}
+                                placeholder="Especificaciones del Equipo"
+                                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                            ></textarea>
                         </div>
                     </div>
-                    {/* <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
-                      Send Message
-                    </button> */}
                 </div>
             </form>
 
             <Modal
                 isOpen={isModalOpen}
                 title="Agregar Serie"
-                content={<SerieForm/>}
+                content={<SerieForm closeModal={closeModal} onNewSerie={handleNewSerie} />}
                 onClose={closeModal}
             />
         </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { GoogleMap, useJsApiLoader, MarkerF } from '@react-google-maps/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMap } from '@fortawesome/free-solid-svg-icons';
@@ -6,8 +6,8 @@ interface LocationSearchProps {
   onLocationSelect: (location: { lat: number; lng: number; address: string }) => void;
 }
 
-const LocationSearch: React.FC<LocationSearchProps> = ({ onLocationSelect }) => {
-  const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
+const LocationSearch: React.FC<LocationSearchProps> = () => {
+  const [] = useState<google.maps.places.Autocomplete | null>(null);
   const [currentLocation, setCurrentLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
 
@@ -41,28 +41,7 @@ const LocationSearch: React.FC<LocationSearchProps> = ({ onLocationSelect }) => 
     }
   }, []);
 
-  const handleLoad = useCallback((autocompleteInstance: google.maps.places.Autocomplete) => {
-    setAutocomplete(autocompleteInstance);
-  }, []);
 
-  const handlePlaceChanged = useCallback(() => {
-    if (autocomplete !== null) {
-      const place = autocomplete.getPlace();
-      if (place.geometry) {
-        const location = {
-          lat: place.geometry.location?.lat() || 0,
-          lng: place.geometry.location?.lng() || 0,
-          address: place.formatted_address || '',
-        };
-        onLocationSelect(location);
-
-        if (mapRef.current) {
-          mapRef.current.panTo(location);
-          mapRef.current.setZoom(16);
-        }
-      }
-    }
-  }, [autocomplete, onLocationSelect]);
 
   if (loadError) {
     return <div>Error al cargar el mapa</div>;

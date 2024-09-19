@@ -17,10 +17,11 @@ const GeneralDataForm = () => {
       <div className="flex justify-end gap-4.5 mb-5">
         {!isFirstStep && (
           <button
-            className="flex justify-center rounded bg-gray-600 py-2 px-6 font-medium text-white hover:bg-gray-500"
+            className="flex justify-center rounded bg-black py-2 px-6 font-medium text-white hover:bg-gray-500"
+
             onClick={previousStep}
           >
-            Atrás &nbsp;
+            Regresar &nbsp;
             <FontAwesomeIcon icon={faArrowLeft} style={{ marginTop: '5px' }} />
           </button>
         )}
