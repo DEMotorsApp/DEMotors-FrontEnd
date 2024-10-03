@@ -1,21 +1,21 @@
 import { useEffect, useState } from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 
 import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
-import Calendar from './pages/Calendar';
-import Chart from './pages/Chart';
 import ECommerce from './pages/Dashboard/ECommerce';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Tables from './pages/Tables';
-import Alerts from './pages/UiElements/Alerts';
-import Buttons from './pages/UiElements/Buttons';
 import DefaultLayout from './layout/DefaultLayout';
 import GeneralDataForm from './pages/ServiceOrder/GeneralData/GeneralDataForm';
+import EmployeeType from './pages/Personal/EmployeeType/EmployeeType';
+import SurveyQuestion from './pages/Configuration/SurveyQuestion/SurveyQuestion';
+import Service from './pages/Configuration/Services/Services';
+import SearchOrder from './pages/ServiceOrder/SearchOrder/SearchOrder';
 import NavBarLayout from './layout/NavBarLayout ';
 import SignIn from './pages/Authentication/SignIn';
-import FormElements from './pages/Form/FormElements';
+import NotFoundComponent from './components/NotFound/NotFoundComponent';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -33,9 +33,12 @@ function App() {
     <Loader />
   ) : (
     <Routes>
-      {/* Rutas que NO están envueltas en DefaultLayout */}
+
       <Route element={<NavBarLayout />}>
-      <Route
+        {/* Redirige la ruta raíz a /auth/login */}
+        <Route path="/" element={<Navigate to="/auth/login" />} />
+
+        <Route
           path="/auth/login"
           element={
             <>
@@ -49,7 +52,6 @@ function App() {
       {/* Rutas que SÍ están envueltas en DefaultLayout */}
       <Route element={<DefaultLayout />}>
         <Route
-          index
           element={
             <>
               <PageTitle title="DEMOTORS APP" />
@@ -57,17 +59,10 @@ function App() {
             </>
           }
         />
-        <Route
-          path="/calendar"
-          element={
-            <>
-              <PageTitle title="Calendar | fsaf - Tailwind CSS Admin Dashboard Template" />
-              <Calendar />
-            </>
-          }
-        />
+
         <Route
           path="/profile"
+
           element={
             <>
               <PageTitle title="Profile | fasf - Tailwind CSS Admin Dashboard Template" />
@@ -76,7 +71,7 @@ function App() {
           }
         />
         <Route
-          path="/forms/formulario-ingreso"
+          path="/service-order/formulario-ingreso"
           element={
             <>
               <PageTitle title="Orden de Servicio" />
@@ -85,11 +80,11 @@ function App() {
           }
         />
         <Route
-          path="/forms/form-layout"
+          path="/service-order/search-order"
           element={
             <>
-              <PageTitle title="Form Layout | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-              <FormElements />
+              <PageTitle title="Búsqueda de Orden" />
+              <SearchOrder />
             </>
           }
         />
@@ -112,33 +107,48 @@ function App() {
           }
         />
         <Route
-          path="/chart"
+          path="/personal/employee-type"
           element={
             <>
-              <PageTitle title="Basic Chart | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-              <Chart />
+              <PageTitle title="Tipo de Empleado" />
+              <EmployeeType />
             </>
           }
         />
         <Route
-          path="/ui/alerts"
+          path="/configuracion/survey-question"
           element={
             <>
-              <PageTitle title="Alerts | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-              <Alerts />
+              <PageTitle title="Preguntas de Encuesta" />
+              <SurveyQuestion />
             </>
           }
         />
         <Route
-          path="/ui/buttons"
+          path="/configuracion/services"
           element={
             <>
-              <PageTitle title="Buttons | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-              <Buttons />
+              <PageTitle title="Servicios" />
+              <Service />
+            </>
+          }
+        />
+
+      </Route>
+      <Route element={<NavBarLayout />}>
+        {/* Redirige la ruta raíz a /auth/login */}
+
+        <Route
+          path="*"
+          element={
+            <>
+              <PageTitle title="Error 404" />
+              <NotFoundComponent />
             </>
           }
         />
       </Route>
+
     </Routes>
   );
 }

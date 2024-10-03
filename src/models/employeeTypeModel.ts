@@ -1,7 +1,7 @@
-export interface Question 
+export interface EmployeeTypeModel 
 {
-    ID_QUESTION: number;
-    QUESTION: string;
+    ID_EMPLOYEE_TYPE: number;
+    EMPLOYEE_TYPE: string;
     USER_CREATED: string;
     DATE_CREATED: string;
     USER_MODIFIED: string;

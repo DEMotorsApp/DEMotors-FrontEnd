@@ -18,7 +18,7 @@ const SignatureForm = () => {
     const COLOR_PINCEL = 'gray';
     const GROSOR = 2;
 
-    const answers = useSelector((state: RootState) => state.serviceForm.answers);
+    const answers = useSelector((state: RootState) => state.questionForm.answers);
 
     const obtenerXReal = (clientX: number) => {
         const canvas = canvasRef.current;

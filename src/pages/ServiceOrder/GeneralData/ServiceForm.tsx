@@ -1,27 +1,27 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { faPencilRuler } from '@fortawesome/free-solid-svg-icons';
+import { faGear } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RootState, AppDispatch } from '../../../redux/store';
 import { setAnswer } from '../../../redux/slices/serviceFormSlice';
 import { useState, useEffect } from 'react';
-import { getQuestions } from '../../../services/questionService/questionService';
-import { Question } from '../../../models/questioModel';
 import LoadComponent from '../../../components/Load/LoadComponent';
+import { ServiceModel } from '../../../models/serviceModel';
+import { getServices } from '../../../services/serviceService/serviceService';
 
 const ServiceForm: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const answers = useSelector((state: RootState) => state.serviceForm.answers);
-  const [questions, setQuestions] = useState<Question[]>([]);
+  const [services, setServices] = useState<ServiceModel[]>([]);
   const [loading, setLoading] = useState(true);
   const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
-    const fetchQuestions = async () => {
+    const fetchServices = async () => {
       try {
-        const result = await getQuestions();
-        setQuestions(result);
+        const result = await getServices();
+        setServices(result);
       } catch (error) {
-        console.error('Error al obtener preguntas:', error);
+        console.error('Error al obtener servicios:', error);
       } finally {
         setLoading(false);
         setTimeout(() => {
@@ -29,11 +29,11 @@ const ServiceForm: React.FC = () => {
         }, 1000);
       }
     };
-    fetchQuestions();
+    fetchServices();
   }, []);
 
-  const handleRadioChange = (questionId: number, questionString: string, answer: string) => {
-    dispatch(setAnswer({ questionId, questionString, answer }));
+  const handleCheckboxChange = (serviceId: number, serviceDescription: string, isChecked: boolean) => {
+    dispatch(setAnswer({ serviceId, serviceDescription, answer: isChecked ? 'Yes' : 'No' }));
   };
 
   if (loading || !showContent) return <LoadComponent />;
@@ -42,79 +42,45 @@ const ServiceForm: React.FC = () => {
     <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
       <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
         <h3 className="font-medium text-black dark:text-white">
-          <FontAwesomeIcon icon={faPencilRuler} /> &nbsp; Constancia de Entrega
+          <FontAwesomeIcon icon={faGear} /> &nbsp; Servicio Solicitado
         </h3>
       </div>
       <form action="#">
-        <div className="p-6.5 grid grid-cols-1 gap-6 md:grid-cols-2">
-          {questions.map((question) => (
-            <div key={question.id_question} className="question-item">
-              <p className="mb-2 text-black dark:text-white">{question.question}</p>
-              <div className="flex space-x-4">
+        <div className="p-6.5 grid grid-cols-1 gap-6 md:grid-cols-3">
+          {services
+            .filter((service) => service.STATE === 'A')
+            .map((service) => (
+              <div key={service.ID_SERVICE} className="question-item">
                 <label
-                  htmlFor={`radioYes-${question.id_question}`}
-                  className="flex cursor-pointer select-none items-center text-black dark:text-white"
+                  htmlFor={`checkbox-${service.ID_SERVICE}`}
+                  className="flex cursor-pointer select-none items-center"
                 >
                   <div className="relative">
                     <input
-                      type="radio"
-                      id={`radioYes-${question.id_question}`}
-                      name={`yesNoGroup-${question.id_question}`}
-                      value="Yes"
-                      checked={answers[question.id_question]?.answer === 'Yes'}
+                      type="checkbox"
+                      id={`checkbox-${service.ID_SERVICE}`}
                       className="sr-only"
-                      onChange={() => handleRadioChange(question.id_question, question.question, 'Yes')}
+                      checked={answers[service.ID_SERVICE]?.answer === 'Yes'}
+                      onChange={(e) => handleCheckboxChange(service.ID_SERVICE, service.SERVICE_DESCRIPTION, e.target.checked)}
                     />
                     <div
-                      className={`mr-2 flex h-5 w-5 items-center justify-center rounded-full border ${
-                        answers[question.id_question]?.answer === 'Yes'
-                          ? 'border-primary bg-gray dark:bg-transparent'
-                          : ''
+                      className={`mr-4 flex h-5 w-5 items-center justify-center rounded border ${
+                        answers[service.ID_SERVICE]?.answer === 'Yes' ? 'border-primary bg-gray dark:bg-transparent' : ''
                       }`}
                     >
                       <span
-                        className={`h-2.5 w-2.5 rounded-full ${
-                          answers[question.id_question]?.answer === 'Yes' ? 'bg-primary' : ''
+                        className={`h-2.5 w-2.5 rounded-sm ${
+                          answers[service.ID_SERVICE]?.answer === 'Yes' ? 'bg-primary' : ''
                         }`}
                       ></span>
                     </div>
                   </div>
-                  Sí
-                </label>
-
-                <label
-                  htmlFor={`radioNo-${question.id_question}`}
-                  className="flex cursor-pointer select-none items-center text-black dark:text-white"
-                >
-                  <div className="relative">
-                    <input
-                      type="radio"
-                      id={`radioNo-${question.id_question}`}
-                      name={`yesNoGroup-${question.id_question}`}
-                      value="No"
-                      checked={answers[question.id_question]?.answer === 'No'}
-                      className="sr-only"
-                      onChange={() => handleRadioChange(question.id_question, question.question, 'No')}
-                    />
-                    <div
-                      className={`mr-2 flex h-5 w-5 items-center justify-center rounded-full border ${
-                        answers[question.id_question]?.answer === 'No'
-                          ? 'border-primary bg-gray dark:bg-transparent'
-                          : ''
-                      }`}
-                    >
-                      <span
-                        className={`h-2.5 w-2.5 rounded-full ${
-                          answers[question.id_question]?.answer === 'No' ? 'bg-primary' : ''
-                        }`}
-                      ></span>
-                    </div>
-                  </div>
-                  No
+                  <span className="text-black dark:text-white">
+                    {service.SERVICE_DESCRIPTION}
+                  </span>
                 </label>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       </form>
     </div>

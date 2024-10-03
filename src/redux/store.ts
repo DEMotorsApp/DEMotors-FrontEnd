@@ -2,12 +2,14 @@ import { configureStore } from '@reduxjs/toolkit';
 import customerFormReducer from './slices/customerFormSlice';
 import equipamentFormSlice from './slices/equipamentFormSlice';
 import serviceFormSlice from './slices/serviceFormSlice';
+import questionFormSlice from './slices/questionFormSlice';
 
 export const store = configureStore({
   reducer: {
     customerForm: customerFormReducer,
     equipamentForm: equipamentFormSlice,
-    serviceForm : serviceFormSlice
+    serviceForm: serviceFormSlice,
+    questionForm : questionFormSlice,
   },
 });
 

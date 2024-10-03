@@ -1,57 +1,70 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileAlt, faCancel } from '@fortawesome/free-solid-svg-icons';
-import { EquipmentSerieModel } from '../../../models/equipmentSerieModel';
-import { createEquipmentSerie } from '../../../services/equipmentSerieService/equipmentSerieService';
 import { toast } from 'react-toastify';
 import LoadComponent from '../../../components/Load/LoadComponent';
+import { Question } from '../../../models/questioModel';
+import { createQuestion } from '../../../services/questionService/questionService';
 
-const SerieForm = ({ onNewSerie, closeModal }: { onNewSerie: (newSerie: EquipmentSerieModel) => void, closeModal: () => void }) => {
-    const [serieName, setSerieName] = useState<string>('');
+const SurveyQuestionForm = ({ onNewQuestion, closeModal }: { onNewQuestion: (newQuestion: Question) => void, closeModal: () => void }) => {
+    const [question, setQuestion] = useState<string>('');
     const [isTouched, setIsTouched] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
-
-        if (!serieName.trim()) {
+    
+        if (!question.trim()) {
             setIsTouched(true);
             return;
         }
-
-        const newSerie: EquipmentSerieModel = {
-            ID_SERIE: 0,
-            DESCRIPTION_SERIE: serieName
+    
+        const newQuestion: Question = {
+            ID_QUESTION: 0,
+            QUESTION: question,
+            USER_CREATED: '',
+            DATE_CREATED: '',
+            USER_MODIFIED: '',
+            DATE_MODIFIED: '',
+            ESTATE: 'A'
         };
-
+    
         setLoading(true); 
-
+    
         try {
-            let message = await createEquipmentSerie(newSerie);
+            const { status, message } = await createQuestion(newQuestion);
             setLoading(false);
-            onNewSerie(newSerie);
-            setSerieName('');
-            closeModal();
-            toast.success(message, {
-                autoClose: 3000,
-                className : "dark:bg-boxdark dark:text-white"
-            });            
-        } catch (err) {
+    
+            if (status === 'SUCCESS') {
+                onNewQuestion(newQuestion);
+                setQuestion('');
+                closeModal();
+                toast.success(message, {
+                    autoClose: 3000,
+                    className: "dark:bg-boxdark dark:text-white"
+                });
+            }
+        } catch (err: any) {
             setLoading(false);
-            if (err instanceof Error) {
+            if (err.status === 'ALERT') {
+                toast.warning(err.message, {
+                    autoClose: 3000,
+                    className: "dark:bg-boxdark dark:text-white"
+                });
+            } else if (err.status === 'ERROR') {
                 toast.error(`Error: ${err.message}`, {
                     autoClose: 3000,
-                    className : "dark:bg-boxdark dark:text-white"
+                    className: "dark:bg-boxdark dark:text-white"
                 });
             } else {
-                toast.error('Error desconocido al crear la serie de equipo.', {
+                toast.error('Error desconocido al crear la Pregunta.', {  
                     autoClose: 3000,
-                    className : "dark:bg-boxdark dark:text-white"
+                    className: "dark:bg-boxdark dark:text-white"
                 });
             }
         }
     };
-
+    
     if (loading) {
         return <LoadComponent />;
     }
@@ -60,22 +73,22 @@ const SerieForm = ({ onNewSerie, closeModal }: { onNewSerie: (newSerie: Equipmen
         <form onSubmit={handleSubmit}>
             <div className="mb-4.5">
                 <label className="mb-2.5 block text-black dark:text-white">
-                    Serie <span className="text-meta-1">*</span>
+                    Pregunta <span className="text-meta-1">*</span>
                 </label>
                 <input
                     type="text"
-                    value={serieName}
+                    value={question}
                     onChange={(e) => {
-                        setSerieName(e.target.value);
+                        setQuestion(e.target.value);
                         setIsTouched(false);
                     }}
                     onBlur={() => setIsTouched(true)}
-                    placeholder="Nombre Serie"
-                    className={`w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${isTouched && !serieName.trim() ? 'border-red-500' : ''}`}
+                    placeholder="Pregunta"
+                    className={`w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${isTouched && !question.trim() ? 'border-red-500' : ''}`}
                     required
                 />
-                {isTouched && !serieName.trim() && (
-                    <p className="text-red-500 mt-1">El nombre de la serie es obligatorio.</p>
+                {isTouched && !question.trim() && (
+                    <p className="text-red-500 mt-1">La pregunta es obligatoria.</p>
                 )}
             </div>
             <div className="flex justify-end gap-4.5">
@@ -83,7 +96,7 @@ const SerieForm = ({ onNewSerie, closeModal }: { onNewSerie: (newSerie: Equipmen
                     className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                     type="button"
                     onClick={() => {
-                        setSerieName('');
+                        setQuestion('');
                         closeModal();
                     }}
                 >
@@ -102,4 +115,4 @@ const SerieForm = ({ onNewSerie, closeModal }: { onNewSerie: (newSerie: Equipmen
     );
 };
 
-export default SerieForm;
+export default SurveyQuestionForm;

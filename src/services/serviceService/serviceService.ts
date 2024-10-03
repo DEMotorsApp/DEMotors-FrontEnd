@@ -1,36 +1,32 @@
 import apiClient from '../api';
-import { Question } from '../../models/questioModel';
+import { ServiceModel } from '../../models/serviceModel';
+const complementURL = 'service'
 
-const complementURL = 'survey-question'
-
-interface QuestionResponse {
-    response: Question[];
+interface ServiceResponse {
+    response: ServiceModel[];
 }
 
-interface CreateQuestionResponse {
+interface CreateServiceResponse {
     response: {
         status: string;
         message: string;
     };
 }
 
-export const getQuestions = async (): Promise<Question[]> => 
-{
-    try 
-    {
-        const response = await apiClient.get<QuestionResponse>(`${complementURL}/getAllQuestion`);
+export const getServices = async (): Promise<ServiceModel[]> => {
+    try {
+        const response = await apiClient.get<ServiceResponse>(`${complementURL}/getAllService`);
         return response.data.response;
-    } 
-    catch (error) 
-    {
-        console.error('Error al obtener las preguntas:', error);
-        throw new Error('No se pudieron obtener las preguntas. Por favor, intenta de nuevo más tarde.');
+    }
+    catch (error) {
+        console.error('Error al obtener los Servicios:', error);
+        throw new Error('No se pudieron obtener los Servicios. Por favor, intenta de nuevo más tarde.');
     }
 };
 
-export const createQuestion = async (question: Question): Promise<{ status: string; message: string }> => {
+export const createService = async (service: ServiceModel): Promise<{ status: string; message: string }> => {
     try {
-        const response = await apiClient.post<CreateQuestionResponse>(`${complementURL}/createSurveyQuestion`, question);
+        const response = await apiClient.post<CreateServiceResponse>(`${complementURL}/createService`, service);
         const { status, message } = response.data.response;
         if (status === 'ERROR' || status === 'ALERT') 
         {
@@ -45,9 +41,9 @@ export const createQuestion = async (question: Question): Promise<{ status: stri
     }
 };
 
-export const updateQuestion = async (question: Question): Promise<{ status: string; message: string }> => {
+export const updateService = async (service: ServiceModel): Promise<{ status: string; message: string }> => {
     try {
-        const response = await apiClient.put<CreateQuestionResponse>(`${complementURL}/updateSurveyQuestion`, question);
+        const response = await apiClient.put<CreateServiceResponse>(`${complementURL}/updateService`, service);
         const { status, message } = response.data.response;
         if (status === 'ERROR' || status === 'ALERT') 
         {
@@ -62,9 +58,9 @@ export const updateQuestion = async (question: Question): Promise<{ status: stri
     }
 };
 
-export const deleteSurveyQuestion = async (question: Question): Promise<{ status: string; message: string }> => {
+export const deleteService = async (service: ServiceModel): Promise<{ status: string; message: string }> => {
     try {
-        const response = await apiClient.put<CreateQuestionResponse>(`${complementURL}/deleteSurveyQuestion`, question);
+        const response = await apiClient.put<CreateServiceResponse>(`${complementURL}/deleteService`, service);
         const { status, message } = response.data.response;
         if (status === 'ERROR' || status === 'ALERT') 
         {

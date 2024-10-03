@@ -4,16 +4,16 @@ import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import serviceOrderForm from '../../../hooks/serviceOrderForm';
 import CustomerForm from './CustomerForm';
 import EquipmentForm from './EquipmentForm';
-import ImageUploader from '../ImageUploader/ImageUploader';
-import ServiceForm from './ServiceForm';
+import SurveyQuestionForm from './SurveyQuestionForm';
 import SignatureForm from './SignatureForm';
+import ServiceForm from './ServiceForm';
 
 const GeneralDataForm = () => {
-  const { step, nextStep, previousStep, isFirstStep, isLastStep } = serviceOrderForm(1, 4);
+  const { step, nextStep, previousStep, isFirstStep, isLastStep } = serviceOrderForm(1, 5);
 
   return (
     <>
-      <Breadcrumb pageName="Datos Generales" />
+      <Breadcrumb pageName="Orden de Servicio" />
       <div className="flex justify-end gap-4.5 mb-5">
         {!isFirstStep && (
           <button
@@ -39,9 +39,9 @@ const GeneralDataForm = () => {
 
       {step === 1 && <CustomerForm />}
       {step === 2 && <EquipmentForm />}
-      {step === 3 && <ServiceForm />}
-      {step === 4 && <SignatureForm />}
-      {step === 5 && <ImageUploader />}
+      {step === 3 && < ServiceForm/>}
+      {step === 4 && < SurveyQuestionForm/>}
+      {step === 5 && <SignatureForm />}
     </>
   );
 };

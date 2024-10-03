@@ -7,7 +7,7 @@ const SignIn: React.FC = () => {
 
   const handleSubmit = (event : any) => {
     event.preventDefault();
-    navigate('/forms/formulario-ingreso');
+    navigate('/service-order/formulario-ingreso');
   };
   return (
     <>

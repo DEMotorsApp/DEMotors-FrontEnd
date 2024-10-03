@@ -1,6 +1,5 @@
 import apiClient from '../api';
 import { EquipmentSerieModel } from '../../models/equipmentSerieModel';
-import { toast } from 'react-toastify';
 
 const complementURL = 'equipment-serie'
 
@@ -29,7 +28,7 @@ export const getEquipmentSeries = async (): Promise<EquipmentSerieModel[]> =>
     }
 };
 
-export const createEquipmentSerie = async (equipmentSerie: EquipmentSerieModel): Promise<void> => {
+export const createEquipmentSerie = async (equipmentSerie: EquipmentSerieModel): Promise<string> => {
     try {
         const response = await apiClient.post<CreateEquipmentSerieResponse>(`${complementURL}/createEquipmentSerie`, equipmentSerie);
         const { status, message } = response.data.response;
@@ -37,8 +36,10 @@ export const createEquipmentSerie = async (equipmentSerie: EquipmentSerieModel):
         if (status === 'ERROR') {
             throw new Error(message);
         }
-        toast.success(`${message}`);
+
+        return message;
     } catch (error) {
         throw new Error(`Error al crear la Serie de Equipo. ${error}`);
     }
 };
+
