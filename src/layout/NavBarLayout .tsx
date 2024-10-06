@@ -15,11 +15,11 @@ const NavBarLayout: React.FC = () => {
         {/* <!-- ===== Content Area Start ===== --> */}
         <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
           {/* <!-- ===== Header Start ===== --> */}
-          <Header 
-        sidebarOpen={sidebarOpen} 
-        setSidebarOpen={setSidebarOpen} 
-        isNavBarLayout={true} // Aquí pasas la nueva propiedad
-      />          {/* <!-- ===== Header End ===== --> */}
+          <Header
+            sidebarOpen={sidebarOpen}
+            setSidebarOpen={setSidebarOpen}
+            isNavBarLayout={true} // Aquí pasas la nueva propiedad
+          />          {/* <!-- ===== Header End ===== --> */}
 
           {/* <!-- ===== Main Content Start ===== --> */}
           <main>

@@ -1,16 +1,45 @@
 import DatePickerOne from '../../../components/Forms/DatePicker/DatePickerOne';
 import { faAddressCard, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState, AppDispatch } from '../../../redux/store';
+import { setName, setAttentionTo, setEmail, setAddress, setPhone, setNit } from '../../../redux/slices/customerFormSlice';
 import AddressForm from './AddresForm';
 import Modal from '../../../components/Modal/ModalComponent';
+import { useState } from 'react';
 
 const CustomerForm = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { name, attentionTo, email, address, phone, nit } = useSelector((state: RootState) => state.customerForm);
 
   const [isModalOpen, setModalOpen] = useState(false);
 
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    switch (name) {
+      case 'name':
+        dispatch(setName(value));
+        break;
+      case 'attentionTo':
+        dispatch(setAttentionTo(value));
+        break;
+      case 'email':
+        dispatch(setEmail(value));
+        break;
+      case 'address':
+        dispatch(setAddress(value));
+        break;
+      case 'phone':
+        dispatch(setPhone(value));
+        break;
+      case 'nit':
+        dispatch(setNit(value));
+        break;
+    }
+  };
 
   return (
     <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -27,7 +56,10 @@ const CustomerForm = () => {
             </label>
             <input
               type="text"
+              name="name"
               placeholder="Nombre del Cliente"
+              value={name}
+              onChange={handleChange}
               className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
             />
           </div>
@@ -39,7 +71,10 @@ const CustomerForm = () => {
               </label>
               <input
                 type="text"
+                name="attentionTo"
                 placeholder="Atención a"
+                value={attentionTo}
+                onChange={handleChange}
                 className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -49,15 +84,16 @@ const CustomerForm = () => {
               </label>
               <input
                 type="email"
+                name="email"
                 placeholder="Email"
+                value={email}
+                onChange={handleChange}
                 className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
           </div>
 
           <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
-
-
             <div className="w-full xl:w-1/2">
               <label className="mb-2.5 block text-black dark:text-white">
                 Dirección <span className="text-meta-1">*</span>
@@ -65,7 +101,10 @@ const CustomerForm = () => {
               <div className="flex items-center space-x-2">
                 <input
                   type="text"
+                  name="address"
                   placeholder="Dirección Cliente"
+                  value={address}
+                  onChange={handleChange}
                   className="flex-grow rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
                 <button
@@ -80,7 +119,6 @@ const CustomerForm = () => {
               </div>
             </div>
 
-
             <div className="w-full xl:w-1/2">
               <DatePickerOne />
             </div>
@@ -93,7 +131,10 @@ const CustomerForm = () => {
               </label>
               <input
                 type="tel"
+                name="phone"
                 placeholder="Teléfono del Cliente"
+                value={phone}
+                onChange={handleChange}
                 className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
@@ -103,28 +144,24 @@ const CustomerForm = () => {
               </label>
               <input
                 type="text"
+                name="nit"
                 placeholder="NIT del Cliente"
+                value={nit}
+                onChange={handleChange}
                 className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
           </div>
-          {/* <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
-                  Send Message
-                </button> */}
         </div>
       </form>
       <Modal
-                isOpen={isModalOpen}
-                title="Ingrese la Ubicación"
-                content={<AddressForm/>}
-                onClose={closeModal}
-            />
+        isOpen={isModalOpen}
+        title="Ingrese la Ubicación"
+        content={<AddressForm />}
+        onClose={closeModal}
+      />
     </div>
-
-    
   );
-
-  
 };
 
 export default CustomerForm;

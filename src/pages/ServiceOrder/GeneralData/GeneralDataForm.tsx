@@ -4,23 +4,24 @@ import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import serviceOrderForm from '../../../hooks/serviceOrderForm';
 import CustomerForm from './CustomerForm';
 import EquipmentForm from './EquipmentForm';
-import ImageUploader from '../ImageUploader/ImageUploader';
-import ServiceForm from './ServiceForm';
+import SurveyQuestionForm from './SurveyQuestionForm';
 import SignatureForm from './SignatureForm';
+import ServiceForm from './ServiceForm';
 
 const GeneralDataForm = () => {
-  const { step, nextStep, previousStep, isFirstStep, isLastStep } = serviceOrderForm(1, 4);
+  const { step, nextStep, previousStep, isFirstStep, isLastStep } = serviceOrderForm(1, 5);
 
   return (
     <>
-      <Breadcrumb pageName="Datos Generales" />
+      <Breadcrumb pageName="Orden de Servicio" />
       <div className="flex justify-end gap-4.5 mb-5">
         {!isFirstStep && (
           <button
-            className="flex justify-center rounded bg-gray-600 py-2 px-6 font-medium text-white hover:bg-gray-500"
+            className="flex justify-center rounded bg-black py-2 px-6 font-medium text-white hover:bg-gray-500"
+
             onClick={previousStep}
           >
-            Atrás &nbsp;
+            Regresar &nbsp;
             <FontAwesomeIcon icon={faArrowLeft} style={{ marginTop: '5px' }} />
           </button>
         )}
@@ -38,9 +39,9 @@ const GeneralDataForm = () => {
 
       {step === 1 && <CustomerForm />}
       {step === 2 && <EquipmentForm />}
-      {step === 3 && <ServiceForm />}
-      {step === 4 && <SignatureForm />}
-      {step === 5 && <ImageUploader />}
+      {step === 3 && < ServiceForm/>}
+      {step === 4 && < SurveyQuestionForm/>}
+      {step === 5 && <SignatureForm />}
     </>
   );
 };
