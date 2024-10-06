@@ -13,6 +13,7 @@ import Alerts from './pages/UiElements/Alerts';
 import Buttons from './pages/UiElements/Buttons';
 import DefaultLayout from './layout/DefaultLayout';
 import GeneralDataForm from './pages/ServiceOrder/GeneralData/GeneralDataForm';
+import GeneralDataReportClient from './pages/reportClients/GeneralData/GeneralDataTable'
 import NavBarLayout from './layout/NavBarLayout ';
 import SignIn from './pages/Authentication/SignIn';
 import FormElements from './pages/Form/FormElements';
@@ -90,6 +91,15 @@ function App() {
             <>
               <PageTitle title="Form Layout | TailAdmin - Tailwind CSS Admin Dashboard Template" />
               <FormElements />
+            </>
+          }
+        />
+        <Route
+          path='/clientes'
+          element={
+            <>
+              <PageTitle title='Reporte de clientes' />
+              <GeneralDataReportClient />
             </>
           }
         />
