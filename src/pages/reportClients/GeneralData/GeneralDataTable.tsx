@@ -1,6 +1,44 @@
 import jsreport from '@jsreport/browser-client'
+import { ColDef } from 'ag-grid-community'
+import { ReportClientsModel } from '../../../models/reportClientsModel'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFilePdf } from '@fortawesome/free-solid-svg-icons'
 
-const GeneralDataTable = (props) => {
+const GeneralDataTable = () => {
+
+
+    const columnDefs: ColDef<ReportClientsModel>[] = [
+        {
+            field: 'NAME',
+            headerName: 'Nombre',
+            filter: true,
+            wrapHeaderText: true
+        },
+        {
+            field: 'DIRECTION',
+            headerName: 'Direccion',
+            filter: true,
+            wrapHeaderText: true
+        },
+        {
+            field: 'NO_SERIE',
+            headerName: 'No. Serie',
+            filter: true,
+            wrapHeaderText: true
+        },
+        {
+            field: 'DATE',
+            headerName: 'Fecha',
+            filter: true,
+            wrapHeaderText: true
+        },
+        {
+            field: 'WORK_DONE',
+            headerName: 'Trabajo realizado',
+            filter: true,
+            wrapHeaderText: true
+        }
+    ]
 
     const handleReport = async () => {
         jsreport.serverUrl = 'http://localhost:5488'
@@ -55,13 +93,21 @@ const GeneralDataTable = (props) => {
 
     return (
         <>
-            <button
-                className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
-                onClick={() => handleReport()}
-                type="button"
-            >
-                Imprimir PDF
-            </button>
+            <div className='mb-8 flex items-center justify-end gap-8'>
+                <button
+                    className="rounded bg-primary py-2 px-6 font-medium text-white hover:bg-opacity-90"
+                    onClick={() => handleReport()}
+                    type="button"
+                >
+                    Imprimir PDF &nbsp;
+                    <FontAwesomeIcon icon={faFilePdf} style={{ marginTop: '5px' }} />
+                </button>
+            </div>
+            <div className='flex flex-col items-center justify-between gap-4 md:flex-row'>
+                <div className='w-full md:w-max flex gap-4 border-b-2 border-gray-200'>
+                    
+                </div>
+            </div>
         </>
     )
 }
