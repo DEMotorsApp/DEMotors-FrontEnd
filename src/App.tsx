@@ -17,6 +17,7 @@ import SearchOrder from './pages/ServiceOrder/SearchOrder/SearchOrder';
 import NavBarLayout from './layout/NavBarLayout ';
 import SignIn from './pages/Authentication/SignIn';
 import NotFoundComponent from './components/NotFound/NotFoundComponent';
+import GeneralDataTableServicesOrder from './pages/reportClients/reportServicesOrder/GeneralDataTableServicesOrder';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -95,6 +96,15 @@ function App() {
             <>
               <PageTitle title='Reporte de clientes' />
               <GeneralDataReportClient />
+            </>
+          }
+        />
+        <Route
+          path='/reporte-ordenes-servicios'
+          element={
+            <>
+              <PageTitle title='Reporte de ordenes de servicios' />
+              <GeneralDataTableServicesOrder />
             </>
           }
         />
