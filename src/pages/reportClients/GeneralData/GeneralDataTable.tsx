@@ -2,47 +2,81 @@ import jsreport from '@jsreport/browser-client'
 import { ColDef } from 'ag-grid-community'
 import { ReportClientsModel } from '../../../models/reportClientsModel'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFilePdf, faSearch } from '@fortawesome/free-solid-svg-icons'
+import { faBars, faFilePdf, faSearch } from '@fortawesome/free-solid-svg-icons'
 import { AgGridReact } from 'ag-grid-react'
 import { useState } from 'react'
 import Breadcrumb from '../../../components/Breadcrumbs/Breadcrumb'
 import { ReportDetailsEquipmentModel } from '../../../models/reportDetailsEquipmentModel'
+import SelectClient from '../../../components/Forms/SelectGroup/SelectClient'
+import { ClientsModel } from '../../../models/ClientsModel'
 
 const GeneralDataTable = () => {
 
+    const [clients, setClients] = useState<ClientsModel[]>([
+        {
+            ID_CLIENT: 1,
+            NAME_CLIENT: 'Edgar Cabrera'
+        },
+        {
+            ID_CLIENT: 2,
+            NAME_CLIENT: 'Rodrigo Cardenas'
+        },
+        {
+            ID_CLIENT: 3,
+            NAME_CLIENT: 'Fernando Tumax'
+        }
+    ])
+
+    const [reportData, setReportData] = useState<ReportClientsModel[]>([])
+
+    const [reportDataEquipment, setReportDataEquipment] = useState<ReportDetailsEquipmentModel[]>([])
+
     const [dataRows, setDataRows] = useState<ReportClientsModel[]>([
         {
-            "NAME": "Juan",
+            "ID_CLIENT": 1,
+            "NAME": "Edgar Cabrera",
             "DIRECTION": "Ejemplo",
             "NO_SERIE": "32131231",
             "DATE": "03/10/2024",
             "WORK_DONE": "SI"
         },
         {
-            "NAME": "Alberto",
+            "ID_CLIENT": 1,
+            "NAME": "Edgar Cabrera",
             "DIRECTION": "Ejemplo",
-            "NO_SERIE": "32131231",
+            "NO_SERIE": "26265489",
             "DATE": "03/10/2024",
             "WORK_DONE": "SI"
         },
         {
-            "NAME": "Felipe",
+            "ID_CLIENT": 2,
+            "NAME": "Rodrigo Cardenas",
             "DIRECTION": "Ejemplo",
-            "NO_SERIE": "32131231",
+            "NO_SERIE": "423154",
             "DATE": "03/10/2024",
             "WORK_DONE": "SI"
         },
         {
-            "NAME": "Ana",
+            "ID_CLIENT": 2,
+            "NAME": "Rodrigo Cardenas",
             "DIRECTION": "Ejemplo",
-            "NO_SERIE": "32131231",
+            "NO_SERIE": "432765346",
             "DATE": "03/10/2024",
             "WORK_DONE": "SI"
         },
         {
-            "NAME": "Andrea",
+            "ID_CLIENT": 3,
+            "NAME": "Fernando Tumax",
             "DIRECTION": "Ejemplo",
-            "NO_SERIE": "32131231",
+            "NO_SERIE": "56575765",
+            "DATE": "03/10/2024",
+            "WORK_DONE": "SI"
+        },
+        {
+            "ID_CLIENT": 3,
+            "NAME": "Fernando Tumax",
+            "DIRECTION": "Ejemplo",
+            "NO_SERIE": "0980678",
             "DATE": "03/10/2024",
             "WORK_DONE": "SI"
         }
@@ -50,33 +84,87 @@ const GeneralDataTable = () => {
 
     const [dataRowsEquipment, setDataRowsEquipment] = useState<ReportDetailsEquipmentModel[]>([
         {
+            "NO_SERIE": "32131231",
+            "DIRECTION": "Ejemplo",
+            "DATE": "03/10/2024",
+            "SERVICES_ORDER": "03124898",
+            "WORK_DONE": "SI"
+        },
+        {
+            "NO_SERIE": "32131231",
+            "DIRECTION": "Ejemplo 1",
+            "DATE": "03/10/2024",
+            "SERVICES_ORDER": "987567654",
+            "WORK_DONE": "SI"
+        },
+        {
+            "NO_SERIE": "26265489",
             "DIRECTION": "Ejemplo",
             "DATE": "03/10/2024",
             "SERVICES_ORDER": "32131231",
             "WORK_DONE": "SI"
         },
         {
-            "DIRECTION": "Ejemplo",
+            "NO_SERIE": "26265489",
+            "DIRECTION": "Ejemplo 2",
             "DATE": "03/10/2024",
-            "SERVICES_ORDER": "32131231",
+            "SERVICES_ORDER": "45687956",
             "WORK_DONE": "SI"
         },
         {
-            "DIRECTION": "Ejemplo",
+            "NO_SERIE": "423154",
+            "DIRECTION": "Ejemplo 3",
             "DATE": "03/10/2024",
-            "SERVICES_ORDER": "32131231",
+            "SERVICES_ORDER": "7845343",
             "WORK_DONE": "SI"
         },
         {
-            "DIRECTION": "Ejemplo",
+            "NO_SERIE": "423154",
+            "DIRECTION": "Ejemplo 4",
             "DATE": "03/10/2024",
-            "SERVICES_ORDER": "32131231",
+            "SERVICES_ORDER": "6233132",
             "WORK_DONE": "SI"
         },
         {
-            "DIRECTION": "Ejemplo",
+            "NO_SERIE": "432765346",
+            "DIRECTION": "Ejemplo 9",
             "DATE": "03/10/2024",
-            "SERVICES_ORDER": "32131231",
+            "SERVICES_ORDER": "387421515",
+            "WORK_DONE": "SI"
+        },
+        {
+            "NO_SERIE": "432765346",
+            "DIRECTION": "Ejemplo 5",
+            "DATE": "03/10/2024",
+            "SERVICES_ORDER": "5467896654",
+            "WORK_DONE": "SI"
+        },
+        {
+            "NO_SERIE": "56575765",
+            "DIRECTION": "Ejemplo 89",
+            "DATE": "03/10/2024",
+            "SERVICES_ORDER": "32103477",
+            "WORK_DONE": "SI"
+        },
+        {
+            "NO_SERIE": "56575765",
+            "DIRECTION": "Ejemplo 23",
+            "DATE": "03/10/2024",
+            "SERVICES_ORDER": "687540123",
+            "WORK_DONE": "SI"
+        },
+        {
+            "NO_SERIE": "0980678",
+            "DIRECTION": "Ejemplo 11",
+            "DATE": "03/10/2024",
+            "SERVICES_ORDER": "5424532432",
+            "WORK_DONE": "SI"
+        },
+        {
+            "NO_SERIE": "0980678",
+            "DIRECTION": "Ejemplo 10",
+            "DATE": "03/10/2024",
+            "SERVICES_ORDER": "6776547654",
             "WORK_DONE": "SI"
         }
     ])
@@ -96,8 +184,22 @@ const GeneralDataTable = () => {
             wrapHeaderText: true
         },
         {
-            field: 'NO_SERIE',
             headerName: 'No. Serie',
+            cellRenderer: (params: { data: ReportClientsModel }) => (
+                <div>
+                    <p>
+                        {params.data.NO_SERIE}
+                        <button
+                            title='Editar'
+                            className='ml-2 rounded-md py-1 px-3 mr-2 text-sm bg-warning text-white bg-opacity-90'      
+                            onClick={() => onChangeTableReportDetailEquipment(params.data.NO_SERIE)}
+                        >
+                            Cargar Info &nbsp;
+                            <FontAwesomeIcon icon={faBars} />
+                        </button>
+                    </p>
+                </div>
+            ),
             filter: true,
             wrapHeaderText: true
         },
@@ -150,7 +252,7 @@ const GeneralDataTable = () => {
             },
             data: {
                 "nombreEmpresa": "Demotors",
-                "dataEquipos": dataRows
+                "dataEquipos": reportData
             }
         })
 
@@ -165,11 +267,19 @@ const GeneralDataTable = () => {
             },
             data: {
                 "nombreEmpresa": "Demotors",
-                "dataDetalles": dataRowsEquipment
+                "dataDetalles": reportDataEquipment
             }
         })
 
         report.openInWindow({ title: 'Lista de detalles de los equipos' })
+    }
+
+    const onChangeTableReportClient = async (idClient: number) => {
+        setReportData(dataRows.filter(data => data.ID_CLIENT === idClient))
+    }
+
+    const onChangeTableReportDetailEquipment = async (noSerie: string) => {
+        setReportDataEquipment(dataRowsEquipment.filter(data => data.NO_SERIE === noSerie))
     }
 
     return (
@@ -186,6 +296,14 @@ const GeneralDataTable = () => {
                             Imprimir PDF &nbsp;
                             <FontAwesomeIcon icon={faFilePdf} style={{ marginTop: '5px' }} />
                         </button>
+                    </div>
+                    <div className='mb-4.5 flex flex-col gap-6 xl:flex-row'>
+                        <div className='w-full xl:w-1/2 flex items-end'>
+                            <SelectClient 
+                                clients={clients}
+                                onChangeTable={onChangeTableReportClient}
+                            />
+                        </div>
                     </div>
                     <div className='flex flex-col items-center justify-between gap-4 md:flex-row'>
                         {/* <div className='w-full md:w-max flex gap-4 border-b-2 border-gray-200'>
@@ -204,7 +322,7 @@ const GeneralDataTable = () => {
                         <div className='ag-theme-quartz' style={{ height: 400 }}>
                             <AgGridReact
                                 columnDefs={columnDefs}
-                                rowData={dataRows}
+                                rowData={reportData}
                                 pagination={true}
                                 paginationPageSize={10}
                                 defaultColDef={{
@@ -246,7 +364,7 @@ const GeneralDataTable = () => {
                         <div className='ag-theme-quartz' style={{ height: 400 }}>
                             <AgGridReact
                                 columnDefs={columnDefsEquipo}
-                                rowData={dataRowsEquipment}
+                                rowData={reportDataEquipment}
                                 pagination={true}
                                 paginationPageSize={10}
                                 defaultColDef={{

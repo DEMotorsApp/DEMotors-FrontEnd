@@ -1,4 +1,5 @@
 export interface ReportServicesOrderModel {
+    ID_CLIENT: number;
     NUM_ORDER: string;
     CLIENT: string;
     DIRECTION: string;
