@@ -14,6 +14,7 @@ interface CreateClientResponse {
 export const createClient = async (client: ClientModel): Promise<CreateClientResponse> => {
     try {
         const responseApi = await apiClient.post<CreateClientResponse>(`${complementURL}/createClient`, client)
+        console.log(responseApi)
         const { data: response } = responseApi
         return response
     } catch (error) {

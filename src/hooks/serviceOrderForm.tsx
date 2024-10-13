@@ -3,6 +3,7 @@ import { createClient } from '../services/clientService/clientService';
 import { ClientModel } from '../models/clientModel';
 import { toast } from 'react-toastify';
 import { EquipmentModel } from '../models/equipmentModel';
+import { createEquipment } from '../services/equipmentService/equipmentService';
 
 const serviceOrderFormStep = (initialStep = 1, totalSteps = 5, forms: any) => {
   const [step, setStep] = useState(initialStep);
@@ -11,9 +12,8 @@ const serviceOrderFormStep = (initialStep = 1, totalSteps = 5, forms: any) => {
     if (step < totalSteps) {
       setStep(prevStep => prevStep + 1);
       try {
-        switch (step) {
-          case 1:
-            const { customerForm } = forms
+        if (step === 1) {
+          const { customerForm } = forms
             const { name, attentionTo, email, address, date, phone, nit } = customerForm
             const newClient: ClientModel = {
               FULL_NAME: name,
@@ -24,9 +24,6 @@ const serviceOrderFormStep = (initialStep = 1, totalSteps = 5, forms: any) => {
               PHONE_NUMBER: phone,
               NIT: nit
             }
-
-            console.log(newClient)
-      
             let responseApi = await createClient(newClient)
             const { response } = responseApi
             const { message } = response
@@ -34,22 +31,26 @@ const serviceOrderFormStep = (initialStep = 1, totalSteps = 5, forms: any) => {
               autoClose: 3000,
               className: "dark:bg-boxdark dark:text-white"
             })
-            break;
-          case 2:
-            const { equipamentForm } = forms
-            const { motor, marca, modelo, serie, especificaciones } = equipamentForm
+        } else if (step === 2) {
+          const { equipamentForm } = forms
+            const { motor, marca, modelo, idSerie, serie, especificaciones } = equipamentForm
             const newEquipment: EquipmentModel = {
               ENGINE: motor,
               TRADEMARK: marca,
               MODEL_1: modelo,
               MODEL_2: modelo,
-              ID_SERIE: 0,
+              ID_SERIE: idSerie,
               EQUIPMENT_SERIE: serie,
               DESCRIPTION: especificaciones,
               DESCRIPTION_2: especificaciones
             }
-            console.log(newEquipment)
-            break;
+            let responseApi = await createEquipment(newEquipment)
+            const { response } = responseApi
+            const { message } = response
+            toast.success(message, {
+              autoClose: 3000,
+              className: "dark:bg-boxdark dark:text-white"
+            })
         }
       } catch (err) {
         if (err instanceof Error) {

@@ -1,21 +1,13 @@
 import flatpickr from 'flatpickr';
 import React, { useEffect } from 'react';
 import { Spanish } from 'flatpickr/dist/l10n/es';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../redux/store';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../../redux/store';
 import { setDate } from '../../../redux/slices/customerFormSlice';
 
 const DatePickerOne = () => {
 
   const dispatch = useDispatch<AppDispatch>();
-  const { date } = useSelector((state: RootState) => state.customerForm);
-
-  /* const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('HOLA A TODOS')
-    const { name, value } = e.target
-    console.log(name)
-    if (name === 'date') dispatch(setDate(value))
-  } */
 
   useEffect(() => {
     // Init flatpickr
