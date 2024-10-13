@@ -1,8 +1,22 @@
 import flatpickr from 'flatpickr';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Spanish } from 'flatpickr/dist/l10n/es';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../../redux/store';
+import { setDate } from '../../../redux/slices/customerFormSlice';
 
 const DatePickerOne = () => {
+
+  const dispatch = useDispatch<AppDispatch>();
+  const { date } = useSelector((state: RootState) => state.customerForm);
+
+  /* const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('HOLA A TODOS')
+    const { name, value } = e.target
+    console.log(name)
+    if (name === 'date') dispatch(setDate(value))
+  } */
+
   useEffect(() => {
     // Init flatpickr
     flatpickr('.form-datepicker', {
@@ -10,7 +24,10 @@ const DatePickerOne = () => {
       locale : Spanish,
       static: false,
       monthSelectorType: 'static',
-      dateFormat: 'M j, Y',
+      dateFormat: 'Y-m-d',
+      onChange: (selectedDates, dateStr, instance) => {
+        dispatch(setDate(dateStr))
+      },
       prevArrow:
         '<svg className="fill-current" width="7" height="11" viewBox="0 0 7 11"><path d="M5.4 10.8l1.4-1.4-4-4 4-4L5.4 0 0 5.4z" /></svg>',
       nextArrow:

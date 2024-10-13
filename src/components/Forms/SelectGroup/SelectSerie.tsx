@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { EquipmentSerieModel } from '../../../models/equipmentSerieModel';
 import LoadComponent from '../../Load/LoadComponent';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../../redux/store';
 
 const SelectSerie: React.FC<{ equipmentSeries: EquipmentSerieModel[], loading: boolean }> = ({ equipmentSeries, loading }) => {
   const [isOptionSelected, setIsOptionSelected] = useState<boolean>(false);
+
+  const dispatch = useDispatch<AppDispatch>();
 
   if (loading) return <LoadComponent />;
 

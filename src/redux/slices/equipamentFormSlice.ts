@@ -4,6 +4,7 @@ interface EquipamentFormState {
     motor: string;
     marca: string;
     modelo: string;
+    idSerie: number;
     serie: string;
     especificaciones: string;
 }
@@ -12,6 +13,7 @@ const initialState: EquipamentFormState = {
     motor: '',
     marca: '',
     modelo: '',
+    idSerie: 0,
     serie: '',
     especificaciones: ''
 };
@@ -29,6 +31,9 @@ const equipamentFormSlice = createSlice({
         setModelo(state, action: PayloadAction<string>) {
             state.modelo = action.payload;
         },
+        setIdSerie(state, action: PayloadAction<number>) {
+            state.idSerie = action.payload;
+        },
         setSerie(state, action: PayloadAction<string>) {
             state.serie = action.payload;
         },
@@ -38,6 +43,6 @@ const equipamentFormSlice = createSlice({
     }
 });
 
-export const { setMotor, setMarca, setModelo, setSerie, setEspecificaciones } = equipamentFormSlice.actions;
+export const { setMotor, setMarca, setModelo, setIdSerie, setSerie, setEspecificaciones } = equipamentFormSlice.actions;
 
 export default equipamentFormSlice.reducer;
