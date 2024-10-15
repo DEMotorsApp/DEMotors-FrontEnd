@@ -7,9 +7,13 @@ import EquipmentForm from './EquipmentForm';
 import SurveyQuestionForm from './SurveyQuestionForm';
 import SignatureForm from './SignatureForm';
 import ServiceForm from './ServiceForm';
+import { RootState } from '../../../redux/store';
+import { useSelector } from 'react-redux';
 
 const GeneralDataForm = () => {
-  const { step, nextStep, previousStep, isFirstStep, isLastStep } = serviceOrderForm(1, 5);
+  const { customerForm, equipamentForm } = useSelector((state: RootState) => state);
+  const forms = { customerForm, equipamentForm }
+  const { step, nextStep, previousStep, isFirstStep, isLastStep } = serviceOrderForm(1, 5, forms);
 
   return (
     <>
