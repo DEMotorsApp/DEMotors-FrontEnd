@@ -1,6 +1,5 @@
 export interface ReportClientsModel {
-    ID_CLIENT: number;
-    NAME: string;
+    CLIENT: string;
     DIRECTION: string;
     NO_SERIE: string;
     DATE: string;

@@ -1,5 +1,5 @@
 import jsreport from '@jsreport/browser-client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ReportServicesOrderModel } from '../../../models/reportServicesOrderModel'
 import { ColDef } from 'ag-grid-community'
 import Breadcrumb from '../../../components/Breadcrumbs/Breadcrumb'
@@ -8,140 +8,22 @@ import { faFilePdf } from '@fortawesome/free-solid-svg-icons'
 import { AgGridReact } from 'ag-grid-react'
 import { ClientsModel } from '../../../models/ClientsModel'
 import SelectClient from '../../../components/Forms/SelectGroup/SelectClient'
+import { getClients } from '../../../services/clientService/clientService'
+import DatePickerThree from '../../../components/Forms/DatePicker/DatePickerThree'
 
 const GeneralDataTableServicesOrder = () => {
 
     const [dataReportServicesOrder, setDataReportServicesOrder] = useState<ReportServicesOrderModel[]>([])
 
-    const [clients, setClients] = useState<ClientsModel[]>([
-        {
-            ID_CLIENT: 1,
-            NAME_CLIENT: 'Edgar Cabrera'
-        },
-        {
-            ID_CLIENT: 2,
-            NAME_CLIENT: 'Rodrigo Cardenas'
-        },
-        {
-            ID_CLIENT: 3,
-            NAME_CLIENT: 'Fernando Tumax'
-        }
-    ])
+    const [clients, setClients] = useState<ClientsModel[]>([])
 
-    const [dataRows, setDataRows] = useState<ReportServicesOrderModel[]>([
-        {
-            'ID_CLIENT': 1,
-            'NUM_ORDER': '03124898',
-            'CLIENT': 'Edgar Cabrera',
-            'DIRECTION': 'Ejemplo',
-            'NUM_SERIE': '32131231',
-            'DATE': '03/10/2024',
-            'WORK_DONE': 'SI'
-        },
-        {
-            'ID_CLIENT': 1,
-            'NUM_ORDER': '987567654',
-            'CLIENT': 'Edgar Cabrera',
-            'DIRECTION': 'Ejemplo',
-            'NUM_SERIE': '32131231',
-            'DATE': '03/10/2024',
-            'WORK_DONE': 'SI'
-        },
-        {
-            'ID_CLIENT': 1,
-            'NUM_ORDER': '32131231',
-            'CLIENT': 'Edgar Cabrera',
-            'DIRECTION': 'Ejemplo',
-            'NUM_SERIE': '26265489',
-            'DATE': '03/10/2024',
-            'WORK_DONE': 'SI'
-        },
-        {
-            'ID_CLIENT': 1,
-            'NUM_ORDER': '45687956',
-            'CLIENT': 'Edgar Cabrera',
-            'DIRECTION': 'Ejemplo',
-            'NUM_SERIE': '26265489',
-            'DATE': '03/10/2024',
-            'WORK_DONE': 'SI'
-        },
-        {
-            'ID_CLIENT': 2,
-            'NUM_ORDER': '7845343',
-            'CLIENT': 'Rodrigo Cardenas',
-            'DIRECTION': 'Ejemplo',
-            'NUM_SERIE': '423154',
-            'DATE': '03/10/2024',
-            'WORK_DONE': 'SI'
-        },
-        {
-            'ID_CLIENT': 2,
-            'NUM_ORDER': '6233132',
-            'CLIENT': 'Rodrigo Cardenas',
-            'DIRECTION': 'Ejemplo',
-            'NUM_SERIE': '423154',
-            'DATE': '03/10/2024',
-            'WORK_DONE': 'SI'
-        },
-        {
-            'ID_CLIENT': 2,
-            'NUM_ORDER': '387421515',
-            'CLIENT': 'Rodrigo Cardenas',
-            'DIRECTION': 'Ejemplo',
-            'NUM_SERIE': '432765346',
-            'DATE': '03/10/2024',
-            'WORK_DONE': 'SI'
-        },
-        {
-            'ID_CLIENT': 2,
-            'NUM_ORDER': '5467896654',
-            'CLIENT': 'Rodrigo Cardenas',
-            'DIRECTION': 'Ejemplo',
-            'NUM_SERIE': '432765346',
-            'DATE': '03/10/2024',
-            'WORK_DONE': 'SI'
-        },
-        {
-            'ID_CLIENT': 3,
-            'NUM_ORDER': '32103477',
-            'CLIENT': 'Fernando Tumax',
-            'DIRECTION': 'Ejemplo',
-            'NUM_SERIE': '56575765',
-            'DATE': '03/10/2024',
-            'WORK_DONE': 'SI'
-        },
-        {
-            'ID_CLIENT': 3,
-            'NUM_ORDER': '687540123',
-            'CLIENT': 'Fernando Tumax',
-            'DIRECTION': 'Ejemplo',
-            'NUM_SERIE': '56575765',
-            'DATE': '03/10/2024',
-            'WORK_DONE': 'SI'
-        },
-        {
-            'ID_CLIENT': 3,
-            'NUM_ORDER': '5424532432',
-            'CLIENT': 'Fernando Tumax',
-            'DIRECTION': 'Ejemplo',
-            'NUM_SERIE': '0980678',
-            'DATE': '03/10/2024',
-            'WORK_DONE': 'SI'
-        },
-        {
-            'ID_CLIENT': 3,
-            'NUM_ORDER': '6776547654',
-            'CLIENT': 'Fernando Tumax',
-            'DIRECTION': 'Ejemplo',
-            'NUM_SERIE': '0980678',
-            'DATE': '03/10/2024',
-            'WORK_DONE': 'SI'
-        }
-    ])
+    const [client, setClient] = useState(0)
+
+    const [loading, setLoading] = useState(true)
 
     const columnDefs: ColDef<ReportServicesOrderModel>[] = [
         {
-            field: 'NUM_ORDER',
+            field: 'NO_ORDER',
             headerName: 'Numero de orden',
             filter: true,
             wrapHeaderText: true
@@ -159,7 +41,7 @@ const GeneralDataTableServicesOrder = () => {
             wrapHeaderText: true
         },
         {
-            field: 'NUM_SERIE',
+            field: 'NO_SERIE',
             headerName: 'No. Serie',
             filter: true,
             wrapHeaderText: true
@@ -178,6 +60,21 @@ const GeneralDataTableServicesOrder = () => {
         }
     ]
 
+    const fetchClients = async () => {
+        try {
+            const result = await getClients()
+            setClients(result)
+        } catch (error) {
+            console.log('Error al obtener los clientes; ', error)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    useEffect(() => {
+        fetchClients()
+    }, [])
+
     const handleReport = async () => {
         jsreport.serverUrl = 'http://localhost:5488'
         const report = await jsreport.render({
@@ -194,7 +91,9 @@ const GeneralDataTableServicesOrder = () => {
     }
 
     const onChangeTableServicesOrder = async (idClient: number) => {
-        setDataReportServicesOrder(dataRows.filter(data => data.ID_CLIENT === idClient))
+        setClient(idClient)
+        // const result = await getServicesOrders(idClient)
+        // setDataReportServicesOrder(result)
     }
 
     return (
@@ -207,6 +106,14 @@ const GeneralDataTableServicesOrder = () => {
                             <SelectClient 
                                 clients={clients}
                                 onChangeTable={onChangeTableServicesOrder}
+                            />
+                        </div>
+                    </div>
+                    <div className='mb-4.5 flex flex-col gap-12 xl:flex-row'>
+                        <div className='w-full xl:w-1/2 flex items-end'>
+                            <DatePickerThree
+                                client={client}
+                                setDataReportServicesOrder={setDataReportServicesOrder}
                             />
                         </div>
                     </div>
