@@ -7,6 +7,8 @@ import EquipmentForm from './EquipmentForm';
 import SurveyQuestionForm from './SurveyQuestionForm';
 import SignatureForm from './SignatureForm';
 import ServiceForm from './ServiceForm';
+import FileUpload from '../ImageUploader/FileUpload';
+import ImageUploader from '../ImageUploader/ImageUploader';
 
 const GeneralDataForm = () => {
   const { step, nextStep, previousStep, isFirstStep, isLastStep } = serviceOrderForm(1, 5);

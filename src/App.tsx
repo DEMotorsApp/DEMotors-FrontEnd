@@ -16,6 +16,7 @@ import SearchOrder from './pages/ServiceOrder/SearchOrder/SearchOrder';
 import NavBarLayout from './layout/NavBarLayout ';
 import SignIn from './pages/Authentication/SignIn';
 import NotFoundComponent from './components/NotFound/NotFoundComponent';
+import ImageType from './pages/Configuration/ImageType/ImageType';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -130,6 +131,16 @@ function App() {
             <>
               <PageTitle title="Servicios" />
               <Service />
+            </>
+          }
+        />
+
+        <Route
+          path="/configuracion/image-type"
+          element={
+            <>
+              <PageTitle title="Tipo de Imágenes" />
+              <ImageType />
             </>
           }
         />
