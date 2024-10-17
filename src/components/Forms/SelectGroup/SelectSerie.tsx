@@ -1,14 +1,22 @@
 import React, { useState } from 'react';
 import { EquipmentSerieModel } from '../../../models/equipmentSerieModel';
 import LoadComponent from '../../Load/LoadComponent';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../../redux/store';
+import { setIdSerie } from '../../../redux/slices/equipamentFormSlice';
 
 const SelectSerie: React.FC<{ equipmentSeries: EquipmentSerieModel[], loading: boolean }> = ({ equipmentSeries, loading }) => {
   const [isOptionSelected, setIsOptionSelected] = useState<boolean>(false);
+  const [serieSelected, setSerieSelected] = useState<number>(0)
+
+  const dispatch = useDispatch<AppDispatch>();
 
   if (loading) return <LoadComponent />;
 
-  const changeTextColor = () => {
+  const changeTextColor = (e: any) => {
+    const { target } = e
     setIsOptionSelected(true);
+    dispatch(setIdSerie(parseInt(target.value)))
   };
 
   return (
@@ -19,8 +27,8 @@ const SelectSerie: React.FC<{ equipmentSeries: EquipmentSerieModel[], loading: b
 
       <div className="relative w-full z-20 bg-white dark:bg-form-input">
         <select
-          onChange={() => {
-            changeTextColor();
+          onChange={(e) => {
+            changeTextColor(e);
           }}
           className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-4 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input ${isOptionSelected ? 'text-black dark:text-white' : ''
             }`}

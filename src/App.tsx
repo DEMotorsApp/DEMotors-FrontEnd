@@ -9,6 +9,7 @@ import Settings from './pages/Settings';
 import Tables from './pages/Tables';
 import DefaultLayout from './layout/DefaultLayout';
 import GeneralDataForm from './pages/ServiceOrder/GeneralData/GeneralDataForm';
+import GeneralDataReportClient from './pages/reportClients/GeneralData/GeneralDataTable'
 import EmployeeType from './pages/Personal/EmployeeType/EmployeeType';
 import SurveyQuestion from './pages/Configuration/SurveyQuestion/SurveyQuestion';
 import Service from './pages/Configuration/Services/Services';
@@ -17,6 +18,7 @@ import NavBarLayout from './layout/NavBarLayout ';
 import SignIn from './pages/Authentication/SignIn';
 import NotFoundComponent from './components/NotFound/NotFoundComponent';
 import ImageType from './pages/Configuration/ImageType/ImageType';
+import GeneralDataTableServicesOrder from './pages/reportClients/reportServicesOrder/GeneralDataTableServicesOrder';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -86,6 +88,24 @@ function App() {
             <>
               <PageTitle title="Búsqueda de Orden" />
               <SearchOrder />
+            </>
+          }
+        />
+        <Route
+          path='/clientes'
+          element={
+            <>
+              <PageTitle title='Reporte de clientes' />
+              <GeneralDataReportClient />
+            </>
+          }
+        />
+        <Route
+          path='/reporte-ordenes-servicios'
+          element={
+            <>
+              <PageTitle title='Reporte de ordenes de servicios' />
+              <GeneralDataTableServicesOrder />
             </>
           }
         />

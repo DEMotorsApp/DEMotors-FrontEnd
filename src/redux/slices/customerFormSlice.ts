@@ -5,6 +5,7 @@ interface CustomerFormState {
   attentionTo: string;
   email: string;
   address: string;
+  date: string;
   phone: string;
   nit: string;
 }
@@ -14,6 +15,7 @@ const initialState: CustomerFormState = {
   attentionTo: '',
   email: '',
   address: '',
+  date: '',
   phone: '',
   nit: '',
 };
@@ -34,6 +36,9 @@ const customerFormSlice = createSlice({
     setAddress: (state, action: PayloadAction<string>) => {
       state.address = action.payload;
     },
+    setDate: (state, action: PayloadAction<string>) => {
+      state.date = action.payload;
+    },
     setPhone: (state, action: PayloadAction<string>) => {
       state.phone = action.payload;
     },
@@ -43,5 +48,5 @@ const customerFormSlice = createSlice({
   },
 });
 
-export const { setName, setAttentionTo, setEmail, setAddress, setPhone, setNit } = customerFormSlice.actions;
+export const { setName, setAttentionTo, setEmail, setAddress, setDate, setPhone, setNit } = customerFormSlice.actions;
 export default customerFormSlice.reducer;

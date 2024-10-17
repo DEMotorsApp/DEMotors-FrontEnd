@@ -16,6 +16,7 @@
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "@jsreport/browser-client": "^3.1.1",
     "@lottiefiles/react-lottie-player": "^3.5.4",
     "@react-google-maps/api": "^2.19.3",
     "@react-pdf/renderer": "^3.4.4",
@@ -32,6 +33,7 @@
     "jsvectormap": "^1.5.3",
     "lottie-web": "^5.12.2",
     "match-sorter": "^6.3.1",
+    "moment": "^2.30.1",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.1",
     "react-dom": "^18.2.0",
