@@ -6,5 +6,6 @@ export interface EquipmentModel {
     ID_SERIE: number,
     EQUIPMENT_SERIE: string,
     DESCRIPTION: string,
-    DESCRIPTION_2: string
+    DESCRIPTION_2: string,
+    SERVICES_ORDER: string
 }

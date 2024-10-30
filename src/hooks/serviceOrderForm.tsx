@@ -17,9 +17,8 @@ const serviceOrderFormStep = (initialStep = 1, totalSteps = 5, forms: any) => {
             const { name, attentionTo, email, address, date, phone, nit } = customerForm
             const newClient: ClientModel = {
               FULL_NAME: name,
-              ATTETION_A: attentionTo,
               EMAIL: email,
-              DIRECTION: address,
+              ADDRESS_CLIENT: address,
               ENTRY_DATE: date,
               PHONE_NUMBER: phone,
               NIT: nit

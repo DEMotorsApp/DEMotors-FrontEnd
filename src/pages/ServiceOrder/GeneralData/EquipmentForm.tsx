@@ -9,11 +9,16 @@ import { RootState, AppDispatch } from '../../../redux/store';
 import { setMotor, setMarca, setModelo, setSerie, setEspecificaciones } from '../../../redux/slices/equipamentFormSlice';
 import { EquipmentSerieModel } from '../../../models/equipmentSerieModel';
 import { getEquipmentSeries } from '../../../services/equipmentSerieService/equipmentSerieService';
+import { useNavigate } from 'react-router-dom';
+import servicesOrderRequest from '../../../hooks/servicesOrderRequest';
 
 const EquipamentForm = () => {
+    const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>();
     const formData = useSelector((state: RootState) => state.equipamentForm);
     const [isModalOpen, setModalOpen] = useState(false);
+
+    const { postEquipment } = servicesOrderRequest()
 
     const openModal = () => setModalOpen(true);
     const closeModal = () => setModalOpen(false);
@@ -62,6 +67,15 @@ const EquipamentForm = () => {
     const handleNewSerie = (newSerie: EquipmentSerieModel) => {
         setEquipmentSeries((prevSeries) => [...prevSeries, newSerie]);
     };
+
+    const handleReturnGeneralPage = () => {
+        navigate('/services-order/general')
+    }
+
+    const handleSubmitEquipment = () => {
+        postEquipment()
+        navigate('/services-order/general')
+    }
 
 
     return (
@@ -190,6 +204,26 @@ const EquipamentForm = () => {
                             ></textarea>
                         </div>
                     </div>
+                </div>
+                <div className="mb-4.5 pl-7.5 flex flex-col gap-6 xl:flex-row">
+                    <button
+                        type="button"
+                        className="h-10 w-20 items-center justify-center bg-red-600 text-white hover:bg-primary-dark transition"
+                        aria-label="Regresar"
+                        title="Regresar"
+                        onClick={handleReturnGeneralPage}
+                    >
+                        Regresar
+                    </button>
+                    <button
+                        type="button"
+                        className="h-10 w-20 items-center justify-center bg-primary text-white hover:bg-primary-dark transition"
+                        aria-label="Guardar"
+                        title="Guardar"
+                        onClick={handleSubmitEquipment}
+                    >
+                        Guardar
+                    </button>
                 </div>
             </form>
 

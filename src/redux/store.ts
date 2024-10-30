@@ -3,6 +3,7 @@ import customerFormReducer from './slices/customerFormSlice';
 import equipamentFormSlice from './slices/equipamentFormSlice';
 import serviceFormSlice from './slices/serviceFormSlice';
 import questionFormSlice from './slices/questionFormSlice';
+import servicesOrderFormSlice from './slices/servicesOrderSlice'
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     equipamentForm: equipamentFormSlice,
     serviceForm: serviceFormSlice,
     questionForm : questionFormSlice,
+    servicesOrderForm: servicesOrderFormSlice
   },
 });
 

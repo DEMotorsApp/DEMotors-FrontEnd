@@ -6,16 +6,25 @@ import { RootState, AppDispatch } from '../../../redux/store';
 import { setName, setAttentionTo, setEmail, setAddress, setPhone, setNit } from '../../../redux/slices/customerFormSlice';
 import AddressForm from './AddresForm';
 import Modal from '../../../components/Modal/ModalComponent';
-import { useState } from 'react';
+import React, { FormEventHandler, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import servicesOrderRequest from '../../../hooks/servicesOrderRequest';
 
 const CustomerForm = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>();
   const { name, attentionTo, email, address, phone, nit } = useSelector((state: RootState) => state.customerForm);
+
+  const { postClient } = servicesOrderRequest()
 
   const [isModalOpen, setModalOpen] = useState(false);
 
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
+
+  const { servicesOrder } = useParams()
+
+  console.log('servicesOrder => ', servicesOrder)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -41,6 +50,15 @@ const CustomerForm = () => {
     }
   };
 
+  const handleReturnGeneralPage = () => {
+    navigate('/services-order/general')
+  }
+
+  const handleSubmitClient = () => {
+      postClient()
+      navigate('/services-order/general')
+  }
+
   return (
     <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
       <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
@@ -50,7 +68,8 @@ const CustomerForm = () => {
       </div>
       <form action="#">
         <div className="p-6.5">
-          <div className="mb-4.5">
+          <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
+            <div className='w-full xl:w-1/2'>
             <label className="mb-2.5 block text-black dark:text-white">
               Cliente <span className="text-meta-1">*</span>
             </label>
@@ -62,21 +81,6 @@ const CustomerForm = () => {
               onChange={handleChange}
               className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
             />
-          </div>
-
-          <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
-            <div className="w-full xl:w-1/2">
-              <label className="mb-2.5 block text-black dark:text-white">
-                Atención A <span className="text-meta-1">*</span>
-              </label>
-              <input
-                type="text"
-                name="attentionTo"
-                placeholder="Atención a"
-                value={attentionTo}
-                onChange={handleChange}
-                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
             </div>
             <div className="w-full xl:w-1/2">
               <label className="mb-2.5 block text-black dark:text-white">
@@ -92,6 +96,22 @@ const CustomerForm = () => {
               />
             </div>
           </div>
+
+          {/* <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
+            <div className="w-full xl:w-1/2">
+              <label className="mb-2.5 block text-black dark:text-white">
+                Atención A <span className="text-meta-1">*</span>
+              </label>
+              <input
+                type="text"
+                name="attentionTo"
+                placeholder="Atención a"
+                value={attentionTo}
+                onChange={handleChange}
+                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+              />
+            </div>
+          </div> */}
 
           <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
             <div className="w-full xl:w-1/2">
@@ -152,6 +172,26 @@ const CustomerForm = () => {
               />
             </div>
           </div>
+        </div>
+        <div className="mb-4.5 pl-7.5 flex flex-col gap-6 xl:flex-row">
+          <button
+            type="button"
+            className="h-10 w-20 items-center justify-center bg-red-600 text-white hover:bg-primary-dark transition"
+            aria-label="Regresar"
+            title="Regresar"
+            onClick={handleReturnGeneralPage}
+          >
+            Regresar
+          </button>
+          <button
+            type="button"
+            className="h-10 w-20 items-center justify-center bg-primary text-white hover:bg-primary-dark transition"
+            aria-label="Guardar"
+            title="Guardar"
+            onClick={handleSubmitClient}
+          >
+            Guardar
+          </button>
         </div>
       </form>
       <Modal

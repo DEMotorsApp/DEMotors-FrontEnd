@@ -19,6 +19,9 @@ import SignIn from './pages/Authentication/SignIn';
 import NotFoundComponent from './components/NotFound/NotFoundComponent';
 import ImageType from './pages/Configuration/ImageType/ImageType';
 import GeneralDataTableServicesOrder from './pages/reportClients/reportServicesOrder/GeneralDataTableServicesOrder';
+import GeneralData from './pages/newServicesOrder/GeneralData';
+import CustomerForm from './pages/ServiceOrder/GeneralData/CustomerForm';
+import EquipamentForm from './pages/ServiceOrder/GeneralData/EquipmentForm';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -82,12 +85,39 @@ function App() {
             </>
           }
         />
+        <Route 
+          path='/services-order/general'
+          element={
+            <>
+              <PageTitle title='Orden de Servicio' />
+              <GeneralData />
+            </>
+          }
+        />
         <Route
           path="/service-order/search-order"
           element={
             <>
               <PageTitle title="Búsqueda de Orden" />
               <SearchOrder />
+            </>
+          }
+        />
+        <Route
+          path='/service-order/cliente/:servicesOrder'
+          element={
+            <>
+              <PageTitle title='Orden de Servicio | Cliente' />
+              <CustomerForm />
+            </>
+          }
+        />
+        <Route
+          path='/service-order/equipo/:servicesOrder'
+          element={
+            <>
+              <PageTitle title='Orden de Servicio | Cliente' />
+              <EquipamentForm />
             </>
           }
         />
