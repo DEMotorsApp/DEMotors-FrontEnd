@@ -35,7 +35,7 @@ const GeneralDataTableServicesOrder = () => {
             wrapHeaderText: true
         },
         {
-            field: 'DIRECTION',
+            field: 'ADDRESS_CLIENT',
             headerName: 'Direccion',
             filter: true,
             wrapHeaderText: true
