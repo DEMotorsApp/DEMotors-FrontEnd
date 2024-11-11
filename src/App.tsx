@@ -22,6 +22,7 @@ import GeneralDataTableServicesOrder from './pages/reportClients/reportServicesO
 import GeneralData from './pages/newServicesOrder/GeneralData';
 import CustomerForm from './pages/ServiceOrder/GeneralData/CustomerForm';
 import EquipamentForm from './pages/ServiceOrder/GeneralData/EquipmentForm';
+import ServicesOrderUploadImage from './pages/newServicesOrder/servicesOrderUploadImage';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -118,6 +119,15 @@ function App() {
             <>
               <PageTitle title='Orden de Servicio | Cliente' />
               <EquipamentForm />
+            </>
+          }
+        />
+        <Route
+          path='/service-order/imagen/:servicesOrder'
+          element={
+            <>
+              <PageTitle title='Subida de Imagenes' />
+              <ServicesOrderUploadImage />
             </>
           }
         />
