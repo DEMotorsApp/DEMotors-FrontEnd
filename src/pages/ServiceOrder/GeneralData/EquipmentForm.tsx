@@ -87,10 +87,19 @@ const EquipamentForm = () => {
             </div>
             <form action="#">
                 <div className="p-6.5">
+                    <div className='mb-4.5 flex flex-col gap-6 xl:flex-row'>
+                        <div className='w-full xl:w-1/2'>
+                            <label htmlFor="">Equipo</label>
+                        </div>
+                        <div className='w-full xl:w-1/2'>
+                            <label htmlFor="">Motor</label>
+                        </div>
+                    </div>
+
                     <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                         <div className="w-full xl:w-1/2">
                             <label className="mb-2.5 block text-black dark:text-white">
-                                Motor <span className="text-meta-1">*</span>
+                                Motor
                             </label>
                             <input
                                 type="text"
@@ -103,7 +112,7 @@ const EquipamentForm = () => {
                         </div>
                         <div className="w-full xl:w-1/2">
                             <label className="mb-2.5 block text-black dark:text-white">
-                                Marca <span className="text-meta-1">*</span>
+                                Marca
                             </label>
                             <input
                                 type="text"
@@ -119,7 +128,7 @@ const EquipamentForm = () => {
                     <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                         <div className="w-full xl:w-1/2">
                             <label className="mb-2.5 block text-black dark:text-white">
-                                Modelo <span className="text-meta-1">*</span>
+                                Modelo
                             </label>
                             <input
                                 type="text"
