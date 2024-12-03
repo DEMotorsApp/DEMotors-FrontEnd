@@ -52,7 +52,7 @@ const GeneralDataTable = () => {
                         {params.data.NO_SERIE}
                         <button
                             title='Editar'
-                            className='ml-2 rounded-md py-1 px-3 mr-2 text-sm bg-warning text-white bg-opacity-90'      
+                            className='ml-2 rounded-md py-1 px-3 mr-2 text-sm bg-warning text-white bg-opacity-90'
                             onClick={() => onChangeTableReportDetailEquipment(params.data.NO_SERIE)}
                         >
                             Cargar Info &nbsp;
@@ -166,6 +166,18 @@ const GeneralDataTable = () => {
 
     return (
         <>
+            <div>
+                <h1>Galería de Imágenes</h1>
+                <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                    <div key={1} style={{ margin: '10px' }}>
+                        <img
+                            src={'http://localhost:3200/api/image/static/1732662436229-164768132-prueba.jpeg'}
+                            alt={`Imagen ${1}`}
+                            style={{ width: '200px', height: '200px', objectFit: 'cover' }}
+                        />
+                    </div>
+                </div>
+            </div>
             <div className='flex flex-col'>
                 <div>
                     <Breadcrumb pageName='Reporte de listado de equipos por clientes' />
@@ -181,7 +193,7 @@ const GeneralDataTable = () => {
                     </div>
                     <div className='mb-4.5 flex flex-col gap-6 xl:flex-row'>
                         <div className='w-full xl:w-1/2 flex items-end'>
-                            <SelectClient 
+                            <SelectClient
                                 clients={clients}
                                 onChangeTable={onChangeTableReportClient}
                             />
@@ -228,7 +240,7 @@ const GeneralDataTable = () => {
                     </div>
                 </div>
                 <div className='mt-8'>
-                <Breadcrumb pageName='Reporte de listado de detalles del equipo' />
+                    <Breadcrumb pageName='Reporte de listado de detalles del equipo' />
                     <div className='mb-8 flex items-center justify-end gap-8'>
                         <button
                             className="rounded bg-primary py-2 px-6 font-medium text-white hover:bg-opacity-90"
