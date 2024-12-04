@@ -4,18 +4,40 @@ import { useState } from "react"
 import LoadComponent from "../../components/Load/LoadComponent"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCancel, faFileAlt } from "@fortawesome/free-solid-svg-icons"
+import axios from "axios"
 
-const UploadImageForm = ({ closeModal }: { closeModal: () => void }) => {
-    const [loading, setLoading] = useState(false)
+const UploadImageForm = ({ closeModal, loading }: { closeModal: () => void, loading: (valor: boolean) => void }) => {
+    const [image, setImage] = useState(null)
+
+    const handleOnChangeImage = async (event: any) => {
+        const file = event.target.files[0]
+        setImage(file)
+    }
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault()
+        if (!image) {
+            alert('Por favor selecciona una imagen primero.');
+            return;
+        }
+        const formData = new FormData()
+        formData.append('image', image)
+        formData.append('idServiceOrder', '15')
+        try {
+            loading(true)
+            const response = await axios.post('http://localhost:3200/api/image/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            console.log('Respuesta => ', response)
+            closeModal()
+        } catch (e) {
+            console.log('ERROR:: => ', e)
+        } finally {
+            loading(false)
+        }
     }
-
-    if (loading) {
-        return <LoadComponent />
-    }
-
     return (
         <form onSubmit={handleSubmit}>
             <div className="mb-4.5">
@@ -26,6 +48,7 @@ const UploadImageForm = ({ closeModal }: { closeModal: () => void }) => {
                     accept="image/*"
                     multiple
                     type="file"
+                    onChange={(e) => handleOnChangeImage(e)}
                     className="w-full rounded-md border border-stroke p-3 outline-none transition file:mr-4 file:rounded file:border-[0.5px] file:border-stroke file:bg-[#EEEEEE] file:py-1 file:px-2.5 file:text-sm focus:border-primary file:focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-strokedark dark:file:bg-white/30 dark:file:text-white"
                 />
             </div>

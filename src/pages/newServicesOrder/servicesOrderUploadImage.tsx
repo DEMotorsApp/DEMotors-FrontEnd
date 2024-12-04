@@ -1,56 +1,97 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb"
-import { faSave } from "@fortawesome/free-solid-svg-icons"
-import { useState } from "react"
+import { faImage, faSave } from "@fortawesome/free-solid-svg-icons"
+import { useEffect, useState } from "react"
 import { ColDef } from "ag-grid-community"
 import { UploadImageModel } from "../../models/UploadImageModel"
 import LoadComponent from "../../components/Load/LoadComponent"
 import { AgGridReact } from "ag-grid-react"
 import Modal from "../../components/Modal/ModalComponent"
 import UploadImageForm from "./uploadImageForm"
+import { getImageServices } from "../../services/ImageServicesOrderService/imageServicesOrderService"
+import ViewImageServiceOrder from "./viewImageServiceOrder"
 
 const ServicesOrderUploadImage: React.FC = () => {
 
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
     const [isModalOpen, setModalOpen] = useState(false)
+    const [isImageModalOpen, setImageModalOpen] = useState(false)
+    const [viewImage, setViewImage] = useState('')
+    const [imagesServicesOrder, setImagesServicesOrder] = useState<UploadImageModel[]>([])
 
     const openModal = () => setModalOpen(true)
     const closeModal = () => setModalOpen(false)
 
+    const openImageModal = (image:string) => {
+        setViewImage(image)
+        setImageModalOpen(true)
+    }
+    const closeImageModal = () => setImageModalOpen(false)
+
+    const fetchImage = async () => {
+        try {
+            const result = await getImageServices('15')
+            setImagesServicesOrder(result.response)
+        } catch (e) {
+            console.log('Error')
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    useEffect(() => {
+        fetchImage()
+    }, [])
+
     const columnDefs: ColDef<UploadImageModel>[] = [
+        /* {
+            field: 'NO_ORDER',
+            headerName: 'Numero de orden',
+            filter: true,
+            wrapHeaderText: true
+        }, */
         {
-            field: 'NAME',
-            headerName: 'Nombre del archivo',
+            headerName: 'Imagen',
+            cellRenderer: (params: { data: UploadImageModel }) => {
+                const { NAME_PATH: file } = params.data
+                return <div className="item-start">
+                <button
+                    title='Ver imagen'
+                    onClick={() => openImageModal(file)}
+                    className='rounded-md py-1 px-3 mr-2 text-sm bg-warning text-white bg-opacity-90'
+                >
+                    <FontAwesomeIcon icon={faImage} style={{ marginTop: '5px' }} />
+                </button>
+            </div>
+            }
+        },
+        {
+            field: 'CLIENT',
+            headerName: 'Cliente',
             filter: true,
             wrapHeaderText: true
         },
         {
-            field: 'DESCRIPTION',
-            headerName: 'Descripcion de la imagen',
+            field: 'ENGINE',
+            headerName: 'Motor',
             filter: true,
             wrapHeaderText: true
         },
         {
-            field: 'USER_CREATED',
-            headerName: 'Usuario Creo',
+            field: 'MODEL_1',
+            headerName: 'Modelo 1',
             filter: true,
             wrapHeaderText: true
         },
         {
-            field: 'DATE_CREATED',
-            headerName: 'Fecha Creo',
+            field: 'MODEL_2',
+            headerName: 'Modelo 2',
             filter: true,
             wrapHeaderText: true
         },
         {
-            field: 'USER_MODIFIED',
-            headerName: 'Usuario Modifico',
-            filter: true,
-            wrapHeaderText: true
-        },
-        {
-            field: 'DATE_MODIFIED',
-            headerName: 'Fecha Modifico',
+            field: 'SERIE',
+            headerName: 'Serie',
             filter: true,
             wrapHeaderText: true
         }
@@ -78,7 +119,7 @@ const ServicesOrderUploadImage: React.FC = () => {
                         <div className="ag-theme-quartz" style={{ height: 400 }}>
                             <AgGridReact
                                 columnDefs={columnDefs}
-                                rowData={[]}
+                                rowData={imagesServicesOrder}
                                 pagination={true}
                                 paginationPageSize={10}
                                 defaultColDef={{
@@ -96,8 +137,19 @@ const ServicesOrderUploadImage: React.FC = () => {
             <Modal
                 isOpen={isModalOpen}
                 title="Subir Imagen"
-                content={<UploadImageForm closeModal={closeModal}  />}
+                content={<UploadImageForm closeModal={closeModal} loading={setLoading} />}
                 onClose={closeModal}
+            />
+
+            <Modal
+                isOpen={isImageModalOpen}
+                title="Visualizador de imagenes"
+                content={
+                    <ViewImageServiceOrder
+                        file={viewImage}
+                    />
+                }
+                onClose={closeImageModal}
             />
         </>
     )

@@ -166,18 +166,6 @@ const GeneralDataTable = () => {
 
     return (
         <>
-            <div>
-                <h1>Galería de Imágenes</h1>
-                <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                    <div key={1} style={{ margin: '10px' }}>
-                        <img
-                            src={'http://localhost:3200/api/image/static/1732662436229-164768132-prueba.jpeg'}
-                            alt={`Imagen ${1}`}
-                            style={{ width: '200px', height: '200px', objectFit: 'cover' }}
-                        />
-                    </div>
-                </div>
-            </div>
             <div className='flex flex-col'>
                 <div>
                     <Breadcrumb pageName='Reporte de listado de equipos por clientes' />
