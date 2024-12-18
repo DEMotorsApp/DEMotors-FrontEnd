@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux"
 import { RootState } from "../redux/store"
 import { ServicesOrderModel } from "../models/serviceOrderModel"
-import { createServiceOrder } from "../services/servicesOrderService/servicesOrderService"
+import { createServiceOrder, validateServiceOrder } from "../services/servicesOrderService/servicesOrderService"
 import { toast } from "react-toastify"
 import { ClientModel } from "../models/clientModel"
 import { createClient } from "../services/clientService/clientService"
@@ -13,6 +13,13 @@ const servicesOrderRequest = () => {
     const { servicesOrderForm, customerForm, equipamentForm } = useSelector((state: RootState) => state)
 
     const { attentionTo, serviceOrder } = servicesOrderForm
+
+    const getValidateServicesOrder = async (serviceOrder: string) => {
+        const responseApi = await validateServiceOrder(serviceOrder)
+        const { response } = responseApi
+        const { VALIDATE_SERVICES } = response[0]
+        return VALIDATE_SERVICES
+    }
 
     const postServiceOrder = async (correlative: string) => {
         const newService: ServicesOrderModel = {
@@ -72,7 +79,7 @@ const servicesOrderRequest = () => {
             })
     }
 
-    return { postServiceOrder, postClient, postEquipment }
+    return { postServiceOrder, postClient, postEquipment, getValidateServicesOrder }
 }
 
 export default servicesOrderRequest

@@ -7,7 +7,7 @@ interface getImageServicesResponse {
     response: Array<UploadImageModel>
 }
 
-export const getImageServices = async (idServicesOrder: String): Promise<getImageServicesResponse> => {
+export const getImageServices = async (idServicesOrder: any): Promise<getImageServicesResponse> => {
     try {
         const responseApi = await apiClient.get<getImageServicesResponse>(`${complementURL}/get/images/${idServicesOrder}`)
         console.log('responseApi => ', responseApi)

@@ -16,11 +16,16 @@ const GeneralData: React.FC = () => {
 
     const [validate, setValidate] = useState(false)
 
-    const { postServiceOrder } = servicesOrderRequest()
+    const { postServiceOrder, getValidateServicesOrder} = servicesOrderRequest()
 
-    const onHandleClick = (e: any) => {
+    const onHandleClick = async (e: any) => {
         e.preventDefault()
-        console.log('Hola')
+        const resp = await getValidateServicesOrder(serviceOrder)
+        if (resp === 1) {
+            setValidate(true)
+        } else {
+            setValidate(false)
+        }
     }
 
     const onHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,6 +51,7 @@ const GeneralData: React.FC = () => {
             const correlative = `2024-${Math.trunc(Math.random() * (10000000 - 1 + 1) + 1)}`
             dispatch(setServiceOrder(correlative))
             postServiceOrder(correlative)
+            setValidate(true)
         }
     }
 
@@ -89,6 +95,7 @@ const GeneralData: React.FC = () => {
                                 aria-label="Agregar Dirección"
                                 title="Agregar Dirección"
                                 disabled={validate}
+                                onClick={onHandleClick}
                             >
                                 Validar
                             </button>
@@ -97,6 +104,7 @@ const GeneralData: React.FC = () => {
                                 className="flex h-10 w-20 items-center justify-center bg-primary text-white hover:bg-primary-dark transition"
                                 aria-label="Agregar Dirección"
                                 title="Agregar Dirección"
+                                disabled={(serviceOrder !== '') ? true : false}
                                 onClick={generateCorrelative}
                             >
                                 Generar
@@ -106,7 +114,7 @@ const GeneralData: React.FC = () => {
                 </div>
             </form>
             {
-                (active) && (
+                (active && validate) && (
                     <MenuServicesOrder />
                 )
             }

@@ -10,6 +10,7 @@ import Modal from "../../components/Modal/ModalComponent"
 import UploadImageForm from "./uploadImageForm"
 import { getImageServices } from "../../services/ImageServicesOrderService/imageServicesOrderService"
 import ViewImageServiceOrder from "./viewImageServiceOrder"
+import { useParams } from "react-router-dom"
 
 const ServicesOrderUploadImage: React.FC = () => {
 
@@ -18,6 +19,10 @@ const ServicesOrderUploadImage: React.FC = () => {
     const [isImageModalOpen, setImageModalOpen] = useState(false)
     const [viewImage, setViewImage] = useState('')
     const [imagesServicesOrder, setImagesServicesOrder] = useState<UploadImageModel[]>([])
+
+    const { servicesOrder } = useParams()
+
+    console.log(servicesOrder)
 
     const openModal = () => setModalOpen(true)
     const closeModal = () => setModalOpen(false)
@@ -30,7 +35,7 @@ const ServicesOrderUploadImage: React.FC = () => {
 
     const fetchImage = async () => {
         try {
-            const result = await getImageServices('15')
+            const result = await getImageServices(servicesOrder)
             setImagesServicesOrder(result.response)
         } catch (e) {
             console.log('Error')
@@ -41,7 +46,8 @@ const ServicesOrderUploadImage: React.FC = () => {
 
     useEffect(() => {
         fetchImage()
-    }, [])
+        console.log('hola')
+    }, [loading])
 
     const columnDefs: ColDef<UploadImageModel>[] = [
         /* {
@@ -137,7 +143,7 @@ const ServicesOrderUploadImage: React.FC = () => {
             <Modal
                 isOpen={isModalOpen}
                 title="Subir Imagen"
-                content={<UploadImageForm closeModal={closeModal} loading={setLoading} />}
+                content={<UploadImageForm closeModal={closeModal} loading={setLoading} servicesOrder={servicesOrder} />}
                 onClose={closeModal}
             />
 

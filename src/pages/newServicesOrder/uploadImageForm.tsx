@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCancel, faFileAlt } from "@fortawesome/free-solid-svg-icons"
 import axios from "axios"
 
-const UploadImageForm = ({ closeModal, loading }: { closeModal: () => void, loading: (valor: boolean) => void }) => {
+const UploadImageForm = ({ closeModal, loading, servicesOrder }: { closeModal: () => void, loading: (valor: boolean) => void, servicesOrder: any }) => {
     const [image, setImage] = useState(null)
 
     const handleOnChangeImage = async (event: any) => {
@@ -22,7 +22,7 @@ const UploadImageForm = ({ closeModal, loading }: { closeModal: () => void, load
         }
         const formData = new FormData()
         formData.append('image', image)
-        formData.append('idServiceOrder', '15')
+        formData.append('idServiceOrder', servicesOrder)
         try {
             loading(true)
             const response = await axios.post('http://localhost:3200/api/image/upload', formData, {
