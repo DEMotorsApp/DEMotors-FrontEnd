@@ -15,7 +15,6 @@ const GeneralData: React.FC = () => {
     const { attentionTo, serviceOrder, active } = useSelector((state: RootState) => state.servicesOrderForm)
 
     const [validate, setValidate] = useState(false)
-
     const { postServiceOrder, getValidateServicesOrder} = servicesOrderRequest()
 
     const onHandleClick = async (e: any) => {
@@ -35,6 +34,7 @@ const GeneralData: React.FC = () => {
                     dispatch(setAttentionTo(value))
                     break;
                 case 'serviceOrder':
+                    setValidate(false)
                     dispatch(setServiceOrder(value))
                     break;
             }
@@ -54,6 +54,12 @@ const GeneralData: React.FC = () => {
             setValidate(true)
         }
     }
+
+    useEffect(() => {
+        if (serviceOrder !== '') {
+            setValidate(!validate)
+        }
+    }, [])
 
     return (
         <>
