@@ -1,4 +1,3 @@
-import jsreport from '@jsreport/browser-client'
 import { useEffect, useState } from 'react'
 import { ReportServicesOrderModel } from '../../../models/reportServicesOrderModel'
 import { ColDef } from 'ag-grid-community'
@@ -10,8 +9,12 @@ import { ClientsModel } from '../../../models/ClientsModel'
 import SelectClient from '../../../components/Forms/SelectGroup/SelectClient'
 import { getClients } from '../../../services/clientService/clientService'
 import DatePickerThree from '../../../components/Forms/DatePicker/DatePickerThree'
+import { PDFDownloadLink } from '@react-pdf/renderer'
+import ReportServicesOrderPDF from '../../../components/ReportPDF/ReportServicesOrderPDF'
 
 const GeneralDataTableServicesOrder = () => {
+
+    const [dataReportServicesOrderPDF, setDataReportServicesOrderPDF] = useState(null)
 
     const [dataReportServicesOrder, setDataReportServicesOrder] = useState<ReportServicesOrderModel[]>([])
 
@@ -25,18 +28,6 @@ const GeneralDataTableServicesOrder = () => {
         {
             field: 'NO_ORDER',
             headerName: 'Numero de orden',
-            filter: true,
-            wrapHeaderText: true
-        },
-        {
-            field: 'CLIENT',
-            headerName: 'Cliente',
-            filter: true,
-            wrapHeaderText: true
-        },
-        {
-            field: 'ADDRESS_CLIENT',
-            headerName: 'Direccion',
             filter: true,
             wrapHeaderText: true
         },
@@ -75,21 +66,6 @@ const GeneralDataTableServicesOrder = () => {
         fetchClients()
     }, [])
 
-    const handleReport = async () => {
-        jsreport.serverUrl = 'http://localhost:5488'
-        const report = await jsreport.render({
-            template: {
-                name: '/DEMotors/Reportes ordenes de servicios/lista-ordenes-servicios-main'
-            },
-            data: {
-                "nombreEmpresa": "Demotors",
-                "dataOrdenesServicios": dataReportServicesOrder
-            }
-        })
-
-        report.openInWindow({ title: 'Listado de ordenes de servicios' })
-    }
-
     const onChangeTableServicesOrder = async (idClient: number) => {
         setClient(idClient)
         // const result = await getServicesOrders(idClient)
@@ -114,18 +90,20 @@ const GeneralDataTableServicesOrder = () => {
                             <DatePickerThree
                                 client={client}
                                 setDataReportServicesOrder={setDataReportServicesOrder}
+                                setDataReportServicesOrderPDF={setDataReportServicesOrderPDF}
                             />
                         </div>
                     </div>
                     <div className='mb-8 flex items-center justify-end gap-8'>
-                        <button
-                            className='rounded bg-primary py-2 px-6 font-medium text-white hover:bg-opacity-90'
-                            onClick={() => handleReport()}
-                            type='button'
-                        >
-                            Imprimir PDF &nbsp;
-                            <FontAwesomeIcon icon={faFilePdf} style={{ marginTop: '5px' }} />
-                        </button>
+                        <PDFDownloadLink document={<ReportServicesOrderPDF data={dataReportServicesOrderPDF} />} fileName='reporte-orden-servicio-prueba.pdf'>
+                            <button
+                                className='rounded bg-primary py-2 px-6 font-medium text-white hover:bg-opacity-90'
+                                type='button'
+                            >
+                                Descargar PDF &nbsp;
+                                <FontAwesomeIcon icon={faFilePdf} style={{ marginTop: '5px' }} />
+                            </button>
+                        </PDFDownloadLink>
                     </div>
                     <div className='mt-5'>
                         <div className='ag-theme-quartz' style={{ height: 400 }}>

@@ -6,7 +6,7 @@ import { getServicesOrders } from '../../../services/reportsService/reportsServi
 
 const DatePickerThree = (props:any) => {
 
-  const { client, setDataReportServicesOrder } = props
+  const { client, setDataReportServicesOrder, setDataReportServicesOrderPDF } = props
 
   const [startDate, setStartDate] = useState(moment().startOf('months').format('YYYY-MM-DD'))
   const [endDate, setEndDate] = useState(moment().endOf('months').format('YYYY-MM-DD'))
@@ -50,7 +50,8 @@ const DatePickerThree = (props:any) => {
 
   const handleGetServicesOrders = async (idClient : number, dateOne : string, dateTwo : string) => {
     const result = await getServicesOrders(idClient, dateOne, dateTwo)
-    setDataReportServicesOrder(result)
+    setDataReportServicesOrderPDF(result[0])
+    setDataReportServicesOrder(result[0].ces)
 
   }
 

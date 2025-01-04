@@ -41,6 +41,7 @@ export const getClientEquipments = async (idClient: number, startDate: string, e
 
 export const getDetailsEquipments = async (idClient: number, noSerie: string, startDate: string, endDate: string): Promise<ReportDetailsEquipmentModel[]> => {
     try {
+        console.log('noSerie => ', noSerie)
         const response = await apiClient.get<DetailsEquipmentReportResponse>(`${complementURLEquipment}/getDetailsEquipment/${idClient}/${noSerie}/${startDate}/${endDate}`)
         return response.data.response
     } catch (error) {

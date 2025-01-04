@@ -1,4 +1,3 @@
-import jsreport from '@jsreport/browser-client'
 import { ColDef } from 'ag-grid-community'
 import { ReportClientsModel } from '../../../models/reportClientsModel'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -12,6 +11,9 @@ import { ClientsModel } from '../../../models/ClientsModel'
 import DatePickerFour from '../../../components/Forms/DatePicker/DatePickerFour'
 import { getClients } from '../../../services/clientService/clientService'
 import { getDetailsEquipments } from '../../../services/reportsService/reportsService'
+import { PDFDownloadLink } from '@react-pdf/renderer'
+import ReportClientPDF from '../../../components/ReportPDF/reportClientPDF'
+import ReportEquipmentPDF from '../../../components/ReportPDF/ReportEquipmentPDF'
 
 const GeneralDataTable = () => {
 
@@ -21,6 +23,10 @@ const GeneralDataTable = () => {
         startDate: '',
         endDate: ''
     })
+
+    const [reportDataClient, setReportDataClient] = useState(null)
+
+    const [reportDataEquipmentPDF, setReportDataEquipmentPDF] = useState(null)
 
     const [clients, setClients] = useState<ClientsModel[]>([])
 
@@ -33,14 +39,8 @@ const GeneralDataTable = () => {
 
     const columnDefs: ColDef<ReportClientsModel>[] = [
         {
-            field: 'CLIENT',
-            headerName: 'Nombre',
-            filter: true,
-            wrapHeaderText: true
-        },
-        {
-            field: 'ADDRESS_CLIENT',
-            headerName: 'Direccion',
+            field: 'NO_ORDER',
+            headerName: 'No. Orden',
             filter: true,
             wrapHeaderText: true
         },
@@ -80,7 +80,7 @@ const GeneralDataTable = () => {
 
     const columnDefsEquipo: ColDef<ReportDetailsEquipmentModel>[] = [
         {
-            field: 'DIRECTION',
+            field: 'ADDRESS_CLIENT',
             headerName: 'Direccion',
             filter: true,
             wrapHeaderText: true
@@ -104,36 +104,6 @@ const GeneralDataTable = () => {
             wrapHeaderText: true
         },
     ]
-
-    const handleReport = async () => {
-        jsreport.serverUrl = 'http://localhost:5488'
-        const report = await jsreport.render({
-            template: {
-                name: '/DEMotors/Reportes equipos del cliente/lista-equipo-clientes-main'
-            },
-            data: {
-                "nombreEmpresa": "Demotors",
-                "dataEquipos": reportData
-            }
-        })
-
-        report.openInWindow({ title: 'Listado de equipos por cliente' })
-    }
-
-    const handleReportDetailsEquipment = async () => {
-        jsreport.serverUrl = 'http://localhost:5488'
-        const report = await jsreport.render({
-            template: {
-                name: '/DEMotors/Reportes detalles de los equipos/lista-detalles-equipos-main'
-            },
-            data: {
-                "nombreEmpresa": "Demotors",
-                "dataDetalles": reportDataEquipment
-            }
-        })
-
-        report.openInWindow({ title: 'Lista de detalles de los equipos' })
-    }
 
     const fetchClients = async () => {
         try {
@@ -160,7 +130,8 @@ const GeneralDataTable = () => {
     const onChangeTableReportDetailEquipment = async (noSerie: string) => {
         const { idClient, startDate, endDate } = details
         const result = await getDetailsEquipments(idClient, noSerie, startDate, endDate)
-        setReportDataEquipment(result)
+        setReportDataEquipmentPDF(result[0])
+        setReportDataEquipment(result[0].cc)
         // setReportDataEquipment(dataRowsEquipment.filter(data => data.NO_SERIE === noSerie))
     }
 
@@ -170,14 +141,15 @@ const GeneralDataTable = () => {
                 <div>
                     <Breadcrumb pageName='Reporte de listado de equipos por clientes' />
                     <div className='mb-8 flex items-center justify-end gap-8'>
-                        <button
-                            className="rounded bg-primary py-2 px-6 font-medium text-white hover:bg-opacity-90"
-                            onClick={() => handleReport()}
-                            type="button"
-                        >
-                            Imprimir PDF &nbsp;
-                            <FontAwesomeIcon icon={faFilePdf} style={{ marginTop: '5px' }} />
-                        </button>
+                        <PDFDownloadLink document={<ReportClientPDF data={reportDataClient} />} fileName='reporte-cliente-prueba.pdf'>
+                            <button
+                                className="rounded bg-primary py-2 px-6 font-medium text-white hover:bg-opacity-90"
+                                type="button"
+                            >
+                                Descargar PDF &nbsp;
+                                <FontAwesomeIcon icon={faFilePdf} style={{ marginTop: '5px' }} />
+                            </button>
+                        </PDFDownloadLink>
                     </div>
                     <div className='mb-4.5 flex flex-col gap-6 xl:flex-row'>
                         <div className='w-full xl:w-1/2 flex items-end'>
@@ -194,6 +166,7 @@ const GeneralDataTable = () => {
                                 setReportData={setReportData}
                                 setDetails={setDetails}
                                 setReportDataEquipment={setReportDataEquipment}
+                                setReportDataClient={setReportDataClient}
                             />
                         </div>
                     </div>
@@ -230,14 +203,15 @@ const GeneralDataTable = () => {
                 <div className='mt-8'>
                     <Breadcrumb pageName='Reporte de listado de detalles del equipo' />
                     <div className='mb-8 flex items-center justify-end gap-8'>
-                        <button
-                            className="rounded bg-primary py-2 px-6 font-medium text-white hover:bg-opacity-90"
-                            onClick={() => handleReportDetailsEquipment()}
-                            type="button"
-                        >
-                            Imprimir PDF &nbsp;
-                            <FontAwesomeIcon icon={faFilePdf} style={{ marginTop: '5px' }} />
-                        </button>
+                        <PDFDownloadLink document={<ReportEquipmentPDF data={reportDataEquipmentPDF} />} fileName='reporte-equipo-prueba.pdf'>
+                            <button
+                                className="rounded bg-primary py-2 px-6 font-medium text-white hover:bg-opacity-90"
+                                type="button"
+                            >
+                                Imprimir PDF &nbsp;
+                                <FontAwesomeIcon icon={faFilePdf} style={{ marginTop: '5px' }} />
+                            </button>
+                        </PDFDownloadLink>
                     </div>
                     <div className='flex flex-col items-center justify-between gap-4 md:flex-row'>
                         {/* <div className='w-full md:w-max flex gap-4 border-b-2 border-gray-200'>

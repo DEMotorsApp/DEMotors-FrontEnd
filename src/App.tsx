@@ -17,12 +17,14 @@ import SearchOrder from './pages/ServiceOrder/SearchOrder/SearchOrder';
 import NavBarLayout from './layout/NavBarLayout ';
 import SignIn from './pages/Authentication/SignIn';
 import NotFoundComponent from './components/NotFound/NotFoundComponent';
+
 import ImageType from './pages/Configuration/ImageType/ImageType';
 import GeneralDataTableServicesOrder from './pages/reportClients/reportServicesOrder/GeneralDataTableServicesOrder';
 import GeneralData from './pages/newServicesOrder/GeneralData';
 import CustomerForm from './pages/ServiceOrder/GeneralData/CustomerForm';
 import EquipamentForm from './pages/ServiceOrder/GeneralData/EquipmentForm';
 import ServicesOrderUploadImage from './pages/newServicesOrder/servicesOrderUploadImage';
+import ReportClientPDF from './components/ReportPDF/reportClientPDF';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -119,6 +121,15 @@ function App() {
             <>
               <PageTitle title='Orden de Servicio | Cliente' />
               <EquipamentForm />
+            </>
+          }
+        />
+        <Route
+          path='/reportClientsPDF'
+          element={
+            <>
+              <PageTitle title='Reporte de Clientes PDF (Pruebas)' />
+              <ReportClientPDF />
             </>
           }
         />
