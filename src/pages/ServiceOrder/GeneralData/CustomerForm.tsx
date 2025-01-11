@@ -3,15 +3,17 @@ import { faAddressCard, faLocationDot } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../../../redux/store';
-import { setName, setAttentionTo, setEmail, setAddress, setPhone, setNit } from '../../../redux/slices/customerFormSlice';
+import { setName, setAttentionTo, setEmail, setAddress, setPhone, setNit, setDate, setId } from '../../../redux/slices/customerFormSlice';
 import AddressForm from './AddresForm';
 import Modal from '../../../components/Modal/ModalComponent';
-import React, { FormEventHandler, useState } from 'react';
+import React, { FormEventHandler, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import servicesOrderRequest from '../../../hooks/servicesOrderRequest';
+import { getClient } from '../../../services/clientService/clientService';
 
 const CustomerForm = () => {
   const navigate = useNavigate()
+  const params = useParams()
   const dispatch = useDispatch<AppDispatch>();
   const { name, attentionTo, email, address, phone, nit } = useSelector((state: RootState) => state.customerForm);
 
@@ -50,14 +52,39 @@ const CustomerForm = () => {
     }
   };
 
-  const handleReturnGeneralPage = () => {
-    navigate('/services-order/general')
+  const handleReturnPage = () => {
+    navigate('/configuracion/clients')
   }
 
   const handleSubmitClient = () => {
       postClient()
-      navigate('/services-order/general')
+      navigate('/configuracion/clients')
   }
+
+  const getClientBack = async (idClient: number) => {
+    const client = await getClient(idClient)
+    dispatch(setName(client[0].FULL_NAME))
+    dispatch(setEmail(client[0].EMAIL))
+    dispatch(setAddress(client[0].ADDRESS_CLIENT))
+    dispatch(setDate(client[0].ENTRY_DATE))
+    dispatch(setId(client[0].ID_CLIENT))
+    dispatch(setNit(client[0].NIT))
+    dispatch(setPhone(client[0].PHONE_NUMBER))
+  }
+
+  useEffect(() => {
+    if (Object.keys(params).length > 0) {
+      getClientBack(parseInt(params.codClient, 10))
+    } else {
+      dispatch(setName(''))
+      dispatch(setEmail(''))
+      dispatch(setAddress(''))
+      dispatch(setDate(''))
+      dispatch(setId(0))
+      dispatch(setNit(''))
+      dispatch(setPhone(''))
+    }
+  }, [])
 
   return (
     <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -175,11 +202,11 @@ const CustomerForm = () => {
         </div>
         <div className="mb-4.5 pl-7.5 flex flex-col gap-6 xl:flex-row">
           <button
-            type="button"
-            className="h-10 w-20 items-center justify-center bg-red-600 text-white hover:bg-primary-dark transition"
-            aria-label="Regresar"
-            title="Regresar"
-            onClick={handleReturnGeneralPage}
+            type='button'
+            className='h-10 w-20 items-center justify-center bg-danger text-white hover:bg-primary-dark transition'
+            aria-label='Regresar'
+            title='Regresar'
+            onClick={handleReturnPage}
           >
             Regresar
           </button>

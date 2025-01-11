@@ -1,4 +1,4 @@
-import { Document, Page, Text, View } from "@react-pdf/renderer"
+import { Document, Image, Page, Text, View } from "@react-pdf/renderer"
 import { styles } from "./style"
 import { Table, TD, TH, TR } from "@ag-media/react-pdf-table"
 
@@ -48,6 +48,17 @@ const ReportServicesOrderPDF = (props: any) => {
             ))
           }
         </Table>
+
+        <Image src={
+          {
+            uri: "https://app.demotorsguatemala.com:3000/bucket/uploads/serviceOrderImages/2025-0501000151/4d2ba293653c7d8e771d24cd66d8587f.jpg",
+            method: "GET",
+            headers: {
+              "Cache-Control": "no-cache"
+            },
+            body: {}
+          }
+        } />
 
       </Page>
     </Document>

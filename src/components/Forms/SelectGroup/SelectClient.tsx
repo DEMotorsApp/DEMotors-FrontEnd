@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { ClientsModel } from "../../../models/ClientsModel"
 
 
-const SelectClient: React.FC<{ clients: ClientsModel[], onChangeTable: any }> = ({ clients, onChangeTable }) => {
+const SelectClient: React.FC<{ clients: ClientsModel[], onChangeTable: any, flag: boolean }> = ({ clients, onChangeTable, flag }) => {
     const [isOptionSelected, setIsOptionSelected] = useState<boolean>(false);
     const [clientSelected, setClientSelected] = useState<number>(0)
     // if (loading) return <LoadComponent />;
@@ -29,6 +29,7 @@ const SelectClient: React.FC<{ clients: ClientsModel[], onChangeTable: any }> = 
                       }}
                       className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-4 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input ${isOptionSelected ? 'text-black dark:text-white' : ''
                         }`}
+                    disabled={flag}
                 >
                     <option value="" disabled selected className="text-body dark:text-bodydark">
                         Nombres de los clientes

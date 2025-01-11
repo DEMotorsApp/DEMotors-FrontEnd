@@ -17,6 +17,7 @@ import SearchOrder from './pages/ServiceOrder/SearchOrder/SearchOrder';
 import NavBarLayout from './layout/NavBarLayout ';
 import SignIn from './pages/Authentication/SignIn';
 import NotFoundComponent from './components/NotFound/NotFoundComponent';
+import ServiceClientForm from './pages/ServiceOrder/GeneralData/ServiceClientForm';
 
 import ImageType from './pages/Configuration/ImageType/ImageType';
 import GeneralDataTableServicesOrder from './pages/reportClients/reportServicesOrder/GeneralDataTableServicesOrder';
@@ -25,6 +26,7 @@ import CustomerForm from './pages/ServiceOrder/GeneralData/CustomerForm';
 import EquipamentForm from './pages/ServiceOrder/GeneralData/EquipmentForm';
 import ServicesOrderUploadImage from './pages/newServicesOrder/servicesOrderUploadImage';
 import ReportClientPDF from './components/ReportPDF/reportClientPDF';
+import Clients from './pages/Configuration/Clients/Clients';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -111,7 +113,8 @@ function App() {
           element={
             <>
               <PageTitle title='Orden de Servicio | Cliente' />
-              <CustomerForm />
+              {/* <CustomerForm /> */}
+              <ServiceClientForm />
             </>
           }
         />
@@ -184,6 +187,24 @@ function App() {
             <>
               <PageTitle title="Tipo de Empleado" />
               <EmployeeType />
+            </>
+          }
+        />
+        <Route
+          path='/configuracion/add-client/:codClient?'
+          element={
+            <>
+              <PageTitle title='Agregar Clientes' />
+              <CustomerForm />
+            </>
+          }
+        />
+        <Route
+          path='/configuracion/clients'
+          element={
+            <>
+              <PageTitle title='Mantenimiento Clientes' />
+              <Clients />
             </>
           }
         />

@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface CustomerFormState {
+  id: number;
   name: string;
   attentionTo: string;
   email: string;
@@ -11,6 +12,7 @@ interface CustomerFormState {
 }
 
 const initialState: CustomerFormState = {
+  id: 0,
   name: '',
   attentionTo: '',
   email: '',
@@ -24,6 +26,9 @@ const customerFormSlice = createSlice({
   name: 'customerForm',
   initialState,
   reducers: {
+    setId: (state, action: PayloadAction<number>) => {
+      state.id = action.payload
+    },
     setName: (state, action: PayloadAction<string>) => {
       state.name = action.payload;
     },
@@ -45,8 +50,11 @@ const customerFormSlice = createSlice({
     setNit: (state, action: PayloadAction<string>) => {
       state.nit = action.payload;
     },
+    setUpdate: (state, action: PayloadAction<CustomerFormState>) => {
+      state = action.payload
+    }
   },
 });
 
-export const { setName, setAttentionTo, setEmail, setAddress, setDate, setPhone, setNit } = customerFormSlice.actions;
+export const { setName, setAttentionTo, setEmail, setAddress, setDate, setPhone, setNit, setUpdate, setId } = customerFormSlice.actions;
 export default customerFormSlice.reducer;

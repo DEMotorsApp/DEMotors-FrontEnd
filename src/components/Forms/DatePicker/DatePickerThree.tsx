@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { Spanish } from 'flatpickr/dist/l10n/es';
 import moment from 'moment'
 import { getServicesOrders } from '../../../services/reportsService/reportsService';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../redux/store';
 
 const DatePickerThree = (props:any) => {
 
