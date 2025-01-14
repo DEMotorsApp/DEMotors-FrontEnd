@@ -156,6 +156,7 @@ const GeneralDataTable = () => {
                             <SelectClient
                                 clients={clients}
                                 onChangeTable={onChangeTableReportClient}
+                                flag={false}
                             />
                         </div>
                     </div>

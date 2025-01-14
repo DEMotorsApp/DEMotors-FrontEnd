@@ -9,7 +9,7 @@ import { ClientsModel } from '../../../models/ClientsModel'
 import SelectClient from '../../../components/Forms/SelectGroup/SelectClient'
 import { getClients } from '../../../services/clientService/clientService'
 import DatePickerThree from '../../../components/Forms/DatePicker/DatePickerThree'
-import { PDFDownloadLink } from '@react-pdf/renderer'
+import { pdf, PDFDownloadLink } from '@react-pdf/renderer'
 import ReportServicesOrderPDF from '../../../components/ReportPDF/ReportServicesOrderPDF'
 
 const GeneralDataTableServicesOrder = () => {
@@ -62,6 +62,16 @@ const GeneralDataTableServicesOrder = () => {
         }
     }
 
+    console.log('dataReport => ', dataReportServicesOrderPDF)
+
+    const generatePDF = async () => {
+        const blob = await pdf(<ReportServicesOrderPDF data={dataReportServicesOrderPDF} />).toBlob()
+
+        const url = URL.createObjectURL(blob)
+
+        window.open(url)
+    }
+
     useEffect(() => {
         fetchClients()
     }, [])
@@ -79,9 +89,10 @@ const GeneralDataTableServicesOrder = () => {
                     <Breadcrumb pageName='Reporte de listado de ordenes de servicios' />
                     <div className='mb-4.5 flex flex-col gap-6 xl:flex-row'>
                         <div className='w-full xl:w-1/2 flex items-end'>
-                            <SelectClient 
+                            <SelectClient
                                 clients={clients}
                                 onChangeTable={onChangeTableServicesOrder}
+                                flag={false}
                             />
                         </div>
                     </div>
@@ -95,15 +106,14 @@ const GeneralDataTableServicesOrder = () => {
                         </div>
                     </div>
                     <div className='mb-8 flex items-center justify-end gap-8'>
-                        <PDFDownloadLink document={<ReportServicesOrderPDF data={dataReportServicesOrderPDF} />} fileName='reporte-orden-servicio-prueba.pdf'>
-                            <button
-                                className='rounded bg-primary py-2 px-6 font-medium text-white hover:bg-opacity-90'
-                                type='button'
-                            >
-                                Descargar PDF &nbsp;
-                                <FontAwesomeIcon icon={faFilePdf} style={{ marginTop: '5px' }} />
-                            </button>
-                        </PDFDownloadLink>
+                        <button
+                            className='rounded bg-primary py-2 px-6 font-medium text-white hover:bg-opacity-90'
+                            type='button'
+                            onClick={generatePDF}
+                        >
+                            Descargar PDF &nbsp;
+                            <FontAwesomeIcon icon={faFilePdf} style={{ marginTop: '5px' }} />
+                        </button>
                     </div>
                     <div className='mt-5'>
                         <div className='ag-theme-quartz' style={{ height: 400 }}>

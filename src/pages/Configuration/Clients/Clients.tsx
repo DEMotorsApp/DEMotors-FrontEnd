@@ -1,9 +1,8 @@
-import { ColDef } from "ag-grid-community"
 import { ClientModel } from "../../../models/clientModel"
 import { useEffect, useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit, faSave, faSearch, faTrash } from "@fortawesome/free-solid-svg-icons"
-import { AgGridReact } from "ag-grid-react"
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useNavigate } from "react-router-dom"
 import { deleteClient, getClientsServices } from "../../../services/clientService/clientService"
 import Breadcrumb from "../../../components/Breadcrumbs/Breadcrumb"
@@ -61,52 +60,42 @@ const Clients = () => {
     await fetchClients()
   }
 
-  const columnDefs: ColDef<ClientModel>[] = [
+  const columnDefs: GridColDef<ClientModel>[] = [
     {
       field: 'FULL_NAME',
       headerName: 'NOMBRE COMPLETO',
-      resizable: true,
-      filter: true,
-      wrapHeaderText: true,
-      autoHeight: true,
-      cellStyle: {
-        whiteSpace: 'break-spaces'
-      }
+      width: 150
     },
     {
       field: 'NIT',
       headerName: 'NIT',
-      filter: true,
-      wrapHeaderText: true
+      width: 150
     },
     {
       field: 'EMAIL',
       headerName: 'CORREO',
-      filter: true,
-      wrapHeaderText: true
+      width: 150
     },
     {
       field: 'ADDRESS_CLIENT',
       headerName: 'DIRECCION',
-      filter: true,
-      wrapHeaderText: true
+      width: 150
     },
     {
       field: 'ENTRY_DATE',
       headerName: 'FECHA ENTRADA',
-      filter: true,
-      wrapHeaderText: true
+      width: 150
     },
     {
       field: 'PHONE_NUMBER',
       headerName: 'NUMERO',
-      filter: true,
-      wrapHeaderText: true
+      width: 150
     },
     {
+      field: 'acciones',
       headerName: 'ACCIONES',
-      cellRenderer: (params: { data: ClientModel }) => (
-        <div className="items-start">
+      renderCell: (params) => (
+        <div>
           <button
             title="Editar"
             className="rounded-md py-1 px-3 mr-2 text-sm bg-warning text-white bg-opacity-90"
@@ -186,17 +175,11 @@ const Clients = () => {
 
       <div className="mt-5">
         <div className="ag-theme-quartz" style={{ height: 400 }}>
-          <AgGridReact
-            columnDefs={columnDefs}
-            rowData={clients}
-            pagination={true}
-            paginationPageSize={10}
-            defaultColDef={{
-              sortable: true,
-              resizable: false,
-              flex: 1,
-              minWidth: 100,
-            }}
+          <DataGrid
+            columns={columnDefs}
+            rows={clients}
+            disableColumnResize
+            disableRowSelectionOnClick
           />
         </div>
       </div>

@@ -49,16 +49,7 @@ const ReportServicesOrderPDF = (props: any) => {
           }
         </Table>
 
-        <Image src={
-          {
-            uri: "https://app.demotorsguatemala.com:3000/bucket/uploads/serviceOrderImages/2025-0501000151/4d2ba293653c7d8e771d24cd66d8587f.jpg",
-            method: "GET",
-            headers: {
-              "Cache-Control": "no-cache"
-            },
-            body: {}
-          }
-        } />
+        <Image src="https://app.demotorsguatemala.com:3000/bucket/uploads/serviceOrderImages/2025-0501000151/4d2ba293653c7d8e771d24cd66d8587f.jpg"/>
 
       </Page>
     </Document>
