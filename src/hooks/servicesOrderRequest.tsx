@@ -77,16 +77,16 @@ const servicesOrderRequest = () => {
     }
 
     const postEquipment = async () => {
-        const { motor, marca, modelo, idSerie, serie, especificaciones } = equipamentForm
+        const { motor, marca, modelo, segundoModelo, idSerie, serie, especificaciones, segundaEspecificacion } = equipamentForm
         const newEquipment: EquipmentModel = {
             ENGINE: motor,
             TRADEMARK: marca,
             MODEL_1: modelo,
-            MODEL_2: modelo,
+            MODEL_2: segundoModelo,
             ID_SERIE: idSerie,
             EQUIPMENT_SERIE: serie,
             DESCRIPTION: especificaciones,
-            DESCRIPTION_2: especificaciones,
+            DESCRIPTION_2: segundaEspecificacion,
             SERVICES_ORDER: serviceOrder
         }
         let responseApi = await createEquipment(newEquipment)

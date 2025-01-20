@@ -6,7 +6,7 @@ import SelectSerie from '../../../components/Forms/SelectGroup/SelectSerie';
 import Modal from '../../../components/Modal/ModalComponent';
 import SerieForm from './SerieForm';
 import { RootState, AppDispatch } from '../../../redux/store';
-import { setMotor, setMarca, setModelo, setSerie, setEspecificaciones } from '../../../redux/slices/equipamentFormSlice';
+import { setMotor, setMarca, setModelo, setSerie, setEspecificaciones, setSegundoModelo, setSegundaEspecificacion } from '../../../redux/slices/equipamentFormSlice';
 import { EquipmentSerieModel } from '../../../models/equipmentSerieModel';
 import { getEquipmentSeries } from '../../../services/equipmentSerieService/equipmentSerieService';
 import { useNavigate } from 'react-router-dom';
@@ -35,11 +35,17 @@ const EquipamentForm = () => {
             case 'modelo':
                 dispatch(setModelo(value));
                 break;
+            case 'segundoModelo':
+                dispatch(setSegundoModelo(value));
+                break;
             case 'serie':
                 dispatch(setSerie(value));
                 break;
             case 'especificaciones':
                 dispatch(setEspecificaciones(value));
+                break;
+            case 'segundaEspecificacion':
+                dispatch(setSegundaEspecificacion(value));
                 break;
             default:
                 break;
@@ -145,8 +151,8 @@ const EquipamentForm = () => {
                             </label>
                             <input
                                 type="text"
-                                name="modelo"
-                                value={formData.modelo}
+                                name="segundoModelo"
+                                value={formData.segundoModelo}
                                 onChange={handleChange}
                                 placeholder="Modelo del Equipo"
                                 className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -204,8 +210,8 @@ const EquipamentForm = () => {
                                 Especificaciones
                             </label>
                             <textarea
-                                name="especificaciones"
-                                value={formData.especificaciones}
+                                name="segundaEspecificacion"
+                                value={formData.segundaEspecificacion}
                                 onChange={handleChange}
                                 rows={6}
                                 placeholder="Especificaciones del Equipo"

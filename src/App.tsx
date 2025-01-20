@@ -26,7 +26,7 @@ import CustomerForm from './pages/ServiceOrder/GeneralData/CustomerForm';
 import EquipamentForm from './pages/ServiceOrder/GeneralData/EquipmentForm';
 import ServicesOrderUploadImage from './pages/newServicesOrder/servicesOrderUploadImage';
 import ReportClientPDF from './components/ReportPDF/reportClientPDF';
-import Clients from './pages/Configuration/Clients/Clients';
+// import Clients from './pages/Configuration/Clients/Clients';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -199,7 +199,7 @@ function App() {
             </>
           }
         />
-        <Route
+        {/* <Route
           path='/configuracion/clients'
           element={
             <>
@@ -207,7 +207,7 @@ function App() {
               <Clients />
             </>
           }
-        />
+        /> */}
         <Route
           path="/configuracion/survey-question"
           element={
