@@ -40,5 +40,18 @@ export const styles = StyleSheet.create({
   },
   td: {
     padding: 6
+  },
+  imageSty: {
+    width: '100px',
+    height: '100px'
+  },
+  photoContainer: {
+    lineHeight: 0,
+    columnGap: 5
+  },
+  photo: {
+    width: '100%',
+    height: 'auto',
+    marginBottom: '20px'
   }
 });

@@ -1,5 +1,5 @@
 export interface ReportDetailsEquipmentModel {
-    ADDRESS_CLIENT: string;
+    ADDRESS: string;
     DATE: string;
     WORK_DONE: string;
     NO_ORDER: string;

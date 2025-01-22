@@ -17,6 +17,8 @@ const GeneralDataTableServicesOrder = () => {
     const [dataReportServicesOrderPDF, setDataReportServicesOrderPDF] = useState(null)
 
     const [dataReportServicesOrder, setDataReportServicesOrder] = useState<ReportServicesOrderModel[]>([])
+    
+    const [dataReportImage, setDataReportImage] = useState([])
 
     const [clients, setClients] = useState<ClientsModel[]>([])
 
@@ -64,14 +66,6 @@ const GeneralDataTableServicesOrder = () => {
 
     console.log('dataReport => ', dataReportServicesOrderPDF)
 
-    const generatePDF = async () => {
-        const blob = await pdf(<ReportServicesOrderPDF data={dataReportServicesOrderPDF} />).toBlob()
-
-        const url = URL.createObjectURL(blob)
-
-        window.open(url)
-    }
-
     useEffect(() => {
         fetchClients()
     }, [])
@@ -102,18 +96,20 @@ const GeneralDataTableServicesOrder = () => {
                                 client={client}
                                 setDataReportServicesOrder={setDataReportServicesOrder}
                                 setDataReportServicesOrderPDF={setDataReportServicesOrderPDF}
+                                setDataReportImage={setDataReportImage}
                             />
                         </div>
                     </div>
                     <div className='mb-8 flex items-center justify-end gap-8'>
-                        <button
-                            className='rounded bg-primary py-2 px-6 font-medium text-white hover:bg-opacity-90'
-                            type='button'
-                            onClick={generatePDF}
-                        >
-                            Descargar PDF &nbsp;
-                            <FontAwesomeIcon icon={faFilePdf} style={{ marginTop: '5px' }} />
-                        </button>
+                        <PDFDownloadLink document={<ReportServicesOrderPDF data={dataReportServicesOrderPDF} dataImages={dataReportImage} />} fileName='reporte-orden-servicio.pdf'>
+                            <button
+                                className='rounded bg-primary py-2 px-6 font-medium text-white hover:bg-opacity-90'
+                                type='button'
+                            >
+                                Descargar PDF &nbsp;
+                                <FontAwesomeIcon icon={faFilePdf} style={{ marginTop: '5px' }} />
+                            </button>
+                        </PDFDownloadLink>
                     </div>
                     <div className='mt-5'>
                         <div className='ag-theme-quartz' style={{ height: 400 }}>

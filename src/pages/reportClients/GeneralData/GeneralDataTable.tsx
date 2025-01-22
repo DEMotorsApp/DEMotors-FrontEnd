@@ -36,6 +36,10 @@ const GeneralDataTable = () => {
 
     const [reportDataEquipment, setReportDataEquipment] = useState<ReportDetailsEquipmentModel[]>([])
 
+    const [reportImageClient, setReportImageClient] = useState([])
+
+    const [reportImageEquipment, setReportImageEquipment] = useState([])
+
 
     const columnDefs: ColDef<ReportClientsModel>[] = [
         {
@@ -80,7 +84,7 @@ const GeneralDataTable = () => {
 
     const columnDefsEquipo: ColDef<ReportDetailsEquipmentModel>[] = [
         {
-            field: 'ADDRESS_CLIENT',
+            field: 'ADDRESS',
             headerName: 'Direccion',
             filter: true,
             wrapHeaderText: true
@@ -130,8 +134,9 @@ const GeneralDataTable = () => {
     const onChangeTableReportDetailEquipment = async (noSerie: string) => {
         const { idClient, startDate, endDate } = details
         const result = await getDetailsEquipments(idClient, noSerie, startDate, endDate)
-        setReportDataEquipmentPDF(result[0])
-        setReportDataEquipment(result[0].cc)
+        setReportDataEquipmentPDF(result.info[0])
+        setReportDataEquipment(result.info[0].cc)
+        setReportImageEquipment(result.images)
         // setReportDataEquipment(dataRowsEquipment.filter(data => data.NO_SERIE === noSerie))
     }
 
@@ -141,7 +146,7 @@ const GeneralDataTable = () => {
                 <div>
                     <Breadcrumb pageName='Reporte de listado de equipos por clientes' />
                     <div className='mb-8 flex items-center justify-end gap-8'>
-                        <PDFDownloadLink document={<ReportClientPDF data={reportDataClient} />} fileName='reporte-cliente-prueba.pdf'>
+                        <PDFDownloadLink document={<ReportClientPDF data={reportDataClient} dataImages={reportImageClient} />} fileName='reporte-cliente-prueba.pdf'>
                             <button
                                 className="rounded bg-primary py-2 px-6 font-medium text-white hover:bg-opacity-90"
                                 type="button"
@@ -168,6 +173,7 @@ const GeneralDataTable = () => {
                                 setDetails={setDetails}
                                 setReportDataEquipment={setReportDataEquipment}
                                 setReportDataClient={setReportDataClient}
+                                setReportImageClient={setReportImageClient}
                             />
                         </div>
                     </div>
@@ -204,7 +210,7 @@ const GeneralDataTable = () => {
                 <div className='mt-8'>
                     <Breadcrumb pageName='Reporte de listado de detalles del equipo' />
                     <div className='mb-8 flex items-center justify-end gap-8'>
-                        <PDFDownloadLink document={<ReportEquipmentPDF data={reportDataEquipmentPDF} />} fileName='reporte-equipo-prueba.pdf'>
+                        <PDFDownloadLink document={<ReportEquipmentPDF data={reportDataEquipmentPDF} dataImages={reportImageEquipment} />} fileName='reporte-equipo-prueba.pdf'>
                             <button
                                 className="rounded bg-primary py-2 px-6 font-medium text-white hover:bg-opacity-90"
                                 type="button"

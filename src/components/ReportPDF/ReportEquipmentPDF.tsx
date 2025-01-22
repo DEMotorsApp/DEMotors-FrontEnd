@@ -1,11 +1,12 @@
-import { Document, Page, Text, View } from "@react-pdf/renderer"
+import { Document, Image, Page, Text, View } from "@react-pdf/renderer"
 import { styles } from "./style"
 import { Table, TD, TH, TR } from "@ag-media/react-pdf-table"
 
 const ReportEquipmentPDF = (props: any) => {
 
   const {
-    data
+    data,
+    dataImages
   } = props
 
   return (
@@ -26,7 +27,7 @@ const ReportEquipmentPDF = (props: any) => {
           <Text style={[styles.billTo, styles.textBold]}>Equipo:</Text>
           <Text>{data?.DESCRIPTION_SERIE || ''}</Text>
         </View>
-        
+
         <Table style={styles.table}>
           <TH style={[styles.tableHeader, styles.textBold]}>
             <TD style={styles.td}>Direccion</TD>
@@ -45,6 +46,17 @@ const ReportEquipmentPDF = (props: any) => {
             ))
           }
         </Table>
+
+        <View style={[styles.photoContainer]}>
+          {
+            dataImages && dataImages.map((item: any) => (
+              <Image
+                src={item}
+                style={styles.photo}
+              />
+            ))
+          }
+        </View>
 
       </Page>
     </Document>

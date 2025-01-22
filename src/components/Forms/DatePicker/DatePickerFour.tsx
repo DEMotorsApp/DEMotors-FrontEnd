@@ -6,7 +6,7 @@ import { getClientEquipments } from '../../../services/reportsService/reportsSer
 
 const DatePickerFour = (props: any) => {
 
-    const { details, setReportData, setDetails, setReportDataEquipment, setReportDataClient } = props
+    const { details, setReportData, setDetails, setReportDataEquipment, setReportDataClient, setReportImageClient } = props
 
     const [startDate, setStartDate] = useState(moment().startOf('months').format('YYYY-MM-DD'))
     const [endDate, setEndDate] = useState(moment().endOf('months').format('YYYY-MM-DD'))
@@ -50,8 +50,9 @@ const DatePickerFour = (props: any) => {
 
     const handleGetEquipmentByClients = async (dateOne: string, dateTwo: string) => {
         const result = await getClientEquipments(details.idClient, dateOne, dateTwo)
-        setReportDataClient(result[0])
-        setReportData(result[0].ces)
+        setReportDataClient(result.info[0])
+        setReportData(result.info[0].ces)
+        setReportImageClient(result.images)
         setDetails({
             ...details,
             startDate: dateOne,

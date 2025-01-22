@@ -1,11 +1,24 @@
-import { Document, Page, Text, View } from '@react-pdf/renderer';
+import { Document, Image, Page, Text, View } from '@react-pdf/renderer';
 import { Table, TH, TD, TR } from '@ag-media/react-pdf-table'
 import { styles } from './style';
 
 const ReportClientPDF = (props: any) => {
 
+  /* const [infoReport, setInfoReport] = useState(null)
+
+  const fetchInfo = async () => {
+    const result = await getImageServices('2025-2101000361')
+    console.log('result => ', result)
+    setInfoReport(result.response)
+  }
+
+  useEffect(() => {
+    fetchInfo()
+  }, []) */
+
   const {
-    data
+    data,
+    dataImages
   } = props
 
   return (
@@ -25,7 +38,7 @@ const ReportClientPDF = (props: any) => {
         <View style={styles.spaceY}>
           <Text style={[styles.billTo, styles.textBold]}>Atendido a:</Text>
           <Text>{ data?.CLIENT || '' }</Text>
-          <Text>{ data?.ADDRESS_CLIENT || '' }</Text>
+          <Text>{ data?.MODEL_1 || '' }</Text>
         </View>
 
         {/* Renderizado de Tabla */}
@@ -48,6 +61,16 @@ const ReportClientPDF = (props: any) => {
             ))
           }
         </Table>
+        <View style={[styles.photoContainer]}>
+          {
+            dataImages && dataImages.map((item: any) => (
+              <Image
+                src={item}
+                style={styles.photo}
+              />
+            ))
+          }
+        </View>
 
       </Page>
     </Document>
